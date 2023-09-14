@@ -10,7 +10,7 @@ Nexus is a powerful All-In-One Discord Bot. Its 100% free because premium stuff 
 # [Discord](https://discord.gg/z8nxPve4pn)
 # [Patreon](https://patreon.com/toowake)
 
-##TODO
+# TODO
 - Multi Language System
 - YouTube Notifs
 - Twitch Notifs
