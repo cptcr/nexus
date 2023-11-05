@@ -1,7 +1,7 @@
 {
   "name": "nexus",
   "version": "5.0.0",
-  "description": "Aura Bot version 2",
+  "description": "Nexus Discord Bot",
   "main": "src/index.js",
   "scripts": {},
   "author": "toowake",
