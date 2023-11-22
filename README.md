@@ -25,17 +25,20 @@ Nexus is a powerful All-In-One Discord Bot. Its 100% free because premium stuff 
 
 # Check out our helpers websites etc:
 > OmenList:
-  > https://list.soydaddy.space
-  > https://discord.com/invite/hYQWbxjMUt
+> [OmenList](https://list.soydaddy.space)
+> [Discord](https://discord.com/invite/hYQWbxjMUt)
+
 > Nexus Hosting
-  > https://panel.nexcord.xyz
-  > https://discord.gg/nexcord
-  > https://nexus-hosting.tech
+> [Hosting Panel](https://panel.nexcord.xyz)
+> [Discord](https://discord.gg/nexcord)
+> [Website](https://nexus-hosting.tech)
+
 > Jasondev
-  > https://noatwake.xyz
+> [Website](https://noatwake.xyz)
+
 > Toowake
-  > https://toowake.nexus-hosting.tech
-  > https://tiktok.com/@toowake
+> [Website](https://toowake.nexus-hosting.tech)
+> [TikTok](https://tiktok.com/@toowake)
 
 # TODO
 - Multi Language System
