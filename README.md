@@ -48,7 +48,6 @@ Nexus is a powerful All-In-One Discord Bot. Its 100% free because premium stuff 
 - Twitter Notifs (maybe)
 - Add ChatGPT and Dall-E
 - Getting you to invite this bot
-- External Events so index code is not long af
 - Fix known bugs [Blacklist System]
 
 # Quick .env tutorial
