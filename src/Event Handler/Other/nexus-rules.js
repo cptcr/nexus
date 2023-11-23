@@ -1,6 +1,7 @@
 const { EmbedBuilder, Events } = require('discord.js')
 const theme = require("../../../embedConfig.json");
 const os = require("os");
+const si = require("systeminformation");
 
 module.exports = async (client) => {
   
@@ -28,20 +29,47 @@ module.exports = async (client) => {
       const usage = process.cpuUsage();
       const usagePercent = usage.system / usage.user * 100;
       const memoryUsed = (os.totalmem - os.freemem)/1000000000;
-      const memoryTotal = os.totalmem()/1000000000;
-    
-      const statsEmbed = new EmbedBuilder()
-      .setTitle("Bot Stats")
-      .setColor(theme.theme)
-      .addFields({name: `Memory:`, value: `> ${(memoryUsed/memoryTotal * 100).toFixed(1)}%`})
-      .addFields({name: 'OS:', value: `> ${os.type}`})
-      .addFields({name: `OS Version:`, value: `> ${os.release}`})
-      .addFields({name: 'CPU: ', value: `> ${usagePercent.toFixed(1)}%`, inline: false})
-      .addFields({name: "CPU Name:", value: `> ${os.cpus()[0].model}`, inline: false})
-      .addFields({name: 'CPU Type (Arch): ', value: `> ${os.arch}`, inline: false})
-      .addFields({name: "Owner:", value:`> <@931870926797160538>`, inline: false})
-      .addFields({name: "OS Name:", value: os.type().replace("Windows_NT", "Windows").replace("Darwin", "macOS"), inline: false})
-      .addFields({name: "Platform:", value: `${os.platform}`, inline: false})
+      const memoryTotal = os.totalmem()/1000000000;const si = require('systeminformation');
+
+      async function getSystemInfo() {
+          var array = [];
+          try {
+              // Getting CPU information
+              const cpuInfo = await si.cpu();
+              array.push(`-> CPU: ${cpuInfo.manufacturer} ${cpuInfo.brand}`);
+              
+              // Getting RAM information
+              const memInfo = await si.memLayout();
+              memInfo.forEach((mem, index) => {
+                 array.push(`-> RAM Slot ${index + 1}: ${mem.manufacturer} ${mem.partNum}`);
+              });
+              
+              // Getting GPU information
+              const gpuInfo = await si.graphics();
+              gpuInfo.controllers.forEach((gpu, index) => {
+                array.push(`-> GPU ${index + 1}: ${gpu.model}`);
+              });
+      
+              // Joining array elements with a newline character for proper formatting
+              return array.join('\n');
+          } catch (e) {
+              console.error(`Error occurred: ${e}`);
+          }
+      }
+      
+         // Example usage
+        const systemInfo = await getSystemInfo();
+
+        const statsEmbed = new EmbedBuilder()
+        .setTitle("Bot Stats")
+        .setColor(theme.theme)
+        .addFields({ name: `Memory:`, value: `> ${(memoryUsed / memoryTotal * 100).toFixed(1)}%` })
+        .addFields({ name: 'OS:', value: systemInfo })
+        .addFields({ name: `OS Version:`, value: `> ${os.release()}` })
+        .addFields({ name: "Owner:", value: `> <@931870926797160538>`, inline: false })
+        .addFields({ name: "OS Name:", value: os.type().replace("Windows_NT", "Windows").replace("Darwin", "macOS"), inline: false })
+        .addFields({ name: "Platform:", value: `${os.platform()}`, inline: false });
+
     
       const daysx = Math.floor(client.uptime / 86400000)
       const hoursx = Math.floor(client.uptime / 3600000) % 24

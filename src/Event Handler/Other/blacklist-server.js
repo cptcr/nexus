@@ -15,28 +15,32 @@ module.exports = async (client) => {
       }
     })
     const SchemaB = require("../../Schemas.js/Blacklist/blacklist");
+
+    client.on(Events.GuildMemberAdd, async member => {
   
-    //Ban part
-    if (member.guild.id !== process.env.MAINGUILDID) {
-      return;
-    } else {
-      //get data
-      const dataB = await SchemaB.findOne({ User: member.user.id });
-  
-      //if data
-      if (dataB) {
-        //reason
-        const reasonB = dataB.Reason;
-        //ban
-        await member.guild.members.ban(member, {reasonB}).catch(err => {
-          return;
-        });
-        //send msg
-        await member.send({
-          content: `You have been banned from our bot and support server! | Reason: ${reasonB}.`
-        });
-      } else {
+      //Ban part
+      if (member.guild.id !== process.env.MAINGUILDID) {
         return;
+      } else {
+        //get data
+        const dataB = await SchemaB.findOne({ User: member.user.id });
+    
+        //if data
+        if (dataB) {
+          //reason
+          const reasonB = dataB.Reason;
+          //ban
+          await member.guild.members.ban(member, {reasonB}).catch(err => {
+            return;
+          });
+          //send msg
+          await member.send({
+            content: `You have been banned from our bot and support server! | Reason: ${reasonB}.`
+          });
+        } else {
+          return;
+        }
       }
-    }
+
+    })
 }

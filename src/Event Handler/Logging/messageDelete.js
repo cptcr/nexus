@@ -5,8 +5,6 @@ const Audit_Log = require("../../Schemas.js/auditlog");
 module.exports = async (client) => {
     //Message Delete
     client.on(Events.MessageDelete, async (message) => {
-        console.log(message.content)
-    
         const data = await Audit_Log.findOne({
             Guild: message.guild.id,
         }).catch((err) => {return;});

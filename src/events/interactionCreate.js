@@ -2,8 +2,8 @@ const { Interaction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder,
 //blacklist user
 const blacklist = require('../Schemas.js/Blacklist/blacklist');
 const owner = require("../../owner.json").owners;
-const mainSchema = require("../Schemas.js/Developers/maintenance");
-const dataMain = mainSchema.findOne({Type: "main" });
+const mainSchema = require("../Schemas.js/main");
+const dataMain = mainSchema.findOne({Type: "Main" });
  
 module.exports = {
   name: 'interactionCreate',
@@ -17,11 +17,14 @@ module.exports = {
       try{
         var maintenance;
 
-        if (dataMain) {
-          maintenance = true
-        } else {
-          maintenance = false
-        }
+        setInterval(() => {
+          if (dataMain) {
+            maintenance = true
+          } else {
+            maintenance = false
+          }
+
+        }, 1000)
 
         if (maintenance) {
           if (!owner.includes(interaction.user.id)) {

@@ -4,7 +4,7 @@ const reactSchema = require("../../Schemas.js/reactionrole");
 module.exports = async (client) => {
     client.on(Events.InteractionCreate, async (interaction) => {
         if (interaction.customId === "reactionrole") {
-            const {message, guild, channel, member} = message;
+            const {message, guild, channel, member} = interaction;
             const guildx = guild.id;
             const messagex = message.id;
             const reactchannel = channel.id;

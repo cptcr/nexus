@@ -35,7 +35,7 @@ module.exports = {
  
         const embed = new EmbedBuilder()
         .setColor(theme.theme)
-        .setDescription('<a:blue_check:1068909665603289198>  **Your emoji has been enlarged!**')
+        .setDescription('**Your emoji has been enlarged!**')
         .setImage(emoji)
         .setTimestamp()
         .setFooter({ text: 'Emoji Enlarged', iconURL: interaction.user.displayAvatarURL()})

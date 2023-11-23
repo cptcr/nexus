@@ -36,10 +36,7 @@ client.commands = new Collection();
 
 const OmenList = require("./omen.json");
 const OmenListToken = OmenList.token;
-var countOmen = 0;
 setInterval(() => {
-  countOmen++;
-  console.log("OmenList Data Refresh Successfull", countOmen)
   fetch('https://list.soydaddy.space/api/bots/stats', { 
       headers: { 'Authorization': OmenListToken, 'serverCount': client.guilds.cache.size, 'shardCount': 1, 'Content-Type': 'application/json' },
       method: "POST"
@@ -55,9 +52,6 @@ const commandFolders = fs.readdirSync("./src/commands");
 
 //Anti Crash System
 const process = require("node:process");
-const mainGuild = process.env.MAINGUILDID;
-const owner = process.env.OWNERID;
-const justin = process.env.JUSTIN;
 const mongoose = require('mongoose');
 const mongodbURL = process.env.MONGODBURL;
 

@@ -17,8 +17,6 @@ module.exports = async (client) => {
         } else if (data) {
           data.CC += 1;
           await data.save()
-    
-          console.log(data.CC)
         }
       }
     })

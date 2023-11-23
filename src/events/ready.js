@@ -4,8 +4,14 @@ const { ActivityType, EmbedBuilder, Embed } = require(`discord.js`);
 const cmds = require(".././Schemas.js/commandCount");
 mongoose.set('strictQuery', false);
 
-const fs = require("fs");
+const main = require(".././Schemas.js/main")
 
+const si = require('systeminformation');
+
+
+
+
+const fs = require("fs");
 const index = require("../index");
 let client2 = index.client;
 
@@ -34,6 +40,16 @@ module.exports = {
         mongo = "False"
       }
 
+      const dataCmdLol = await main.findOne({ Type: "Main" });
+
+      var dataLol;
+
+      if (dataCmdLol) {
+        dataLol = "True"
+      } else {
+        dataLol = "False"
+      }
+
 
       //Client info:
       console.log("Client:")
@@ -41,8 +57,33 @@ module.exports = {
       console.log(`-> Client ID: ${client.user.id}`)
       console.log(`-> Client Servers: ${servers}`)
       console.log(`-> Client Members: ${users}`)
+      console.log(`-> Client Maintenance: ${dataLol}`)
       console.log("Infos:")
       console.log(`-> MongoDB Connection: ${mongo}`)
+
+      async function getSystemInfo() {
+          try {
+              // Getting CPU information
+              const cpuInfo = await si.cpu();
+              console.log(`-> CPU: ${cpuInfo.manufacturer} ${cpuInfo.brand}`);
+      
+              // Getting RAM information
+              const memInfo = await si.memLayout();
+              memInfo.forEach((mem, index) => {
+                  console.log(`-> RAM Slot ${index + 1}: ${mem.manufacturer} ${mem.partNum}`);
+              });
+      
+              // Getting GPU information
+              const gpuInfo = await si.graphics();
+              gpuInfo.controllers.forEach((gpu, index) => {
+                  console.log(`-> GPU ${index + 1}: ${gpu.model}`);
+              });
+          } catch (e) {
+              console.error(`Error occurred: ${e}`);
+          }
+      }
+      
+      getSystemInfo();
 
       var countG = 0;
 
