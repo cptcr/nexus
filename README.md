@@ -16,7 +16,7 @@ Nexus is a powerful All-In-One Discord Bot. Its 100% free because premium stuff 
 2. Using the name "Nexus" for your Discord Bot is not allowed to (except you have it just in your bots name like ("afknexus")
 3. Dont sell this code as your own. We spent hours/days/weeks creating this bot.
 4. This is not really a TOS Rule, but please dont add a paid premium system to your bot if you use this code. We made it free, you should it too.
-5. Using our Terms of Service and Privacy Policy for your bot is not allowed. Create/Generate your ow
+5. Using our Terms of Service and Privacy Policy for your bot is not allowed. Create/Generate your own
 
 
 # THIS IS NEW:
