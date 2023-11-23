@@ -51,3 +51,39 @@ Nexus is a powerful All-In-One Discord Bot. Its 100% free because premium stuff 
 - External Events so index code is not long af
 - Fix known bugs [Blacklist System]
 
+# Quick .env tutorial
+bot token
+token= Your discord bots token (https://discord.com/developers/applications/YOURBOTID/bot)
+
+#bot
+BOT = Your discord bots discord id
+
+#mongodburl
+MONGODBURL= Your URL from the mongodb database https://www.mongodb.com
+#web port
+PORT= A custom port
+
+#some owner stuff
+OWNERID = the owner id (Your discord id)
+MAINGUILDID = The id from the support server of the bot
+JUSTIN = a friends discord id (if you dont have friends, use your own)
+
+#weather api
+WHSTK_API_KEY = your weather api key
+
+#Twitch
+TWITCHID = your twitch id https://dev.twitch.tv/docs/authentication/
+TWITCHSECRET = your twitch token https://dev.twitch.tv/docs/authentication/
+
+#Top.gg
+KEY = your top.gg key from your bots page
+VOTE_ROLE = the role id for the voters
+
+#Omen List
+OLTOKEN = your omenlist token
+
+#Config
+tos= your TOS Website
+privacy-policy= your Privacy Policy Website
+topgg= your topgg url
+cmdlog= your cmd log channel
