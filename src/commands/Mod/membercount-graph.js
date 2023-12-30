@@ -9,7 +9,7 @@ module.exports = {
         .setDescription('Shows the number of members on the server.'),
     async execute(interaction) {
         const guild = interaction.guild;
-        const totalMembers = guild.memberCount;
+        const totalMembers = guild.cache.size;
         const botMembers = guild.members.cache.filter(member => member.user.bot).size;
         const humanMembers = totalMembers - botMembers;
         const last24Hours = guild.members.cache.filter(member => Date.now() - member.joinedTimestamp < 24 * 60 * 60 * 1000).size;

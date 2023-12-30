@@ -153,11 +153,16 @@ module.exports = {
         collector.on('collect', async i => {
 
             if (i.user.id != interaction.user.id) {
-                return await interaction.reply({
-                    content: "This is not your panel!",
-                    ephemeral: true
-                })
+                try {
+                    return await interaction.reply({
+                        content: "This is not your panel!",
+                        ephemeral: true
+                    })
+                } catch (error) {
+                    return
+                }
             }
+
 
             if (i.customId === "delete-panel") {
                 await msg.delete();

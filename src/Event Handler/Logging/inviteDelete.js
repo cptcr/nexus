@@ -2,6 +2,8 @@ const { EmbedBuilder, Events } = require("discord.js");
 const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 
+//WORKING
+
 module.exports = async (client) => {
     //Invite Delete
     client.on(Events.InviteDelete, async (invite) => {

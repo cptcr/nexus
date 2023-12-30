@@ -2,6 +2,8 @@ const { EmbedBuilder, Events } = require("discord.js");
 const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 
+//WORKING
+
 module.exports = async (client) => {
   
     //Guild Update
@@ -68,7 +70,7 @@ module.exports = async (client) => {
       
           banner = {
             name: "Banner:",
-            value: `[Old Banner}(${oldBanner}) \n[New Banner](${newBanner})`,
+            value: `[Old Banner](${oldBanner}) \n[New Banner](${newBanner})`,
             inline: false
           }
         } else {

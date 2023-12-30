@@ -5,11 +5,14 @@ const maintenance = require("../../Schemas.js/main");
 
 module.exports = async (client) => {
     client.on(Events.MessageCreate, async message => {
-        const { author, channel, guild, content } = message;
+        const { author, channel, guild, } = message;
 
-        const prefix = "n! "
+        const content = message.content.toLowerCase();
+
+        const prefixx = "n! "
+        const prefix = prefixx.toLowerCase();
         
-        if (message.content.startsWith(prefix)) {
+        if (content.startsWith(prefix)) {
             if (!developers.owners.includes(author.id)) {
                 return;
             } else {

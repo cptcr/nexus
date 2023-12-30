@@ -4,7 +4,11 @@ const linkSchema = require('../../Schemas.js/linkSchema');
 module.exports = async (client) => {
   
     //anti affiliate
-    client.on(Events.MessageCreate, async message => {
+    client.on(Events.MessageCreate, async (message) => {
+
+        if (message.guild.id === null) {
+            return
+        }
      
       if (message.content.includes('http') || message.content.includes('discord.gg') || message.content.includes('https://') || message.content.includes('http://') || message.content.includes('discord.gg/') || message.content.includes('dsc.gg')) {
     

@@ -2,9 +2,15 @@ const { EmbedBuilder, Events } = require("discord.js");
 const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 
+//WORKING
+
 module.exports = async (client) => {
     //Channel Update
     client.on(Events.ChannelUpdate, async (oldChannel, newChannel) => {
+        if (oldChannel.parentId === "1167049272265547796" || newChannel.parentId === "1167049272265547796") {
+            return;
+        }
+
         const auditEmbed = new EmbedBuilder().setColor(theme.theme).setTimestamp().setFooter({ text: "Nexus Audit Log System"})
         const data = await Audit_Log.findOne({
             Guild: oldChannel.guild.id,

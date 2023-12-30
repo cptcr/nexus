@@ -7,5 +7,7 @@ const manager = new ShardingManager('./src/index.js', {
 
 manager.on('shardCreate', shard => {
     console.log(`Launched Shard ${shard.id}`)
+
+    let shardx = shard
 });
 manager.spawn().catch(err => {return;});

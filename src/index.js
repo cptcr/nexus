@@ -1,6 +1,8 @@
 const { AttachmentBuilder, MessageType, Client, Partials, GatewayIntentBits, PermissionFlagsBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection, Events, AuditLogEvent, MessageCollector, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require(`discord.js`);
 const fs = require('fs');
 
+const functionsExt = require("../functions")
+
 const client = new Client({ 
   intents: [
         GatewayIntentBits.Guilds, 
@@ -56,7 +58,7 @@ const mongoose = require('mongoose');
 const mongodbURL = process.env.MONGODBURL;
 
 //MONGODB Check
-if (!mongodbURL) return console.log("╬ Error: Cannot find MongodbURL. File: *.env*");
+if (!mongodbURL) return console.log("Error: Cannot find MongodbURL. File: *.env*");
 mongoose.set('strictQuery', false);
 try {
   mongoose.connect(mongodbURL || '', {
@@ -67,15 +69,18 @@ try {
   process.exit(1)
 }
 
+
+
 process.on('unhandledRejection', async (reason, promise) => {
-  console.log("unhandled rejection at:", promise, 'reason:', reason)
+  functionsExt.generateError("Unhandled Rejection", reason, promise)
 });
 process.on('uncaughtException', (err) => {
-      console.log("Uncaught Exception:", err);
+  functionsExt.generateError("Uncaught Exception", err)
 });
 process.on('uncaughtExceptionMonitor', (err, origin) => { 
-      console.log("Uncaught Exception Monitor:", err);  
+  functionsExt.generateError("Uncaught Exception Monitor", err, origin)
 });
+
 
 (async () => {
     for (file of functions) {
@@ -86,10 +91,13 @@ process.on('uncaughtExceptionMonitor', (err, origin) => {
 })();
 client.login(process.env.token)
 
+var count = 0;
 // Load handlers
 fs.readdirSync('./src/Event Handler').forEach((dir) => {
   fs.readdirSync(`./src/Event Handler/${dir}`).forEach((handler) => {
       require(`./Event Handler/${dir}/${handler}`)(client);
+      count++
   }); 
 });
 
+console.log(`Found ` ,count, ` Event Files`)

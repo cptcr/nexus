@@ -1,67 +1,83 @@
-const { EmbedBuilder, Events } = require("discord.js");
-const theme = require("../../../embedConfig.json");
-const Audit_Log = require("../../Schemas.js/auditlog");
+const { Client, GatewayIntentBits, Events } = require('discord.js');
+const fs = require('fs');
+const theme = require('../../../embedConfig.json');
+const Audit_Log = require('../../Schemas.js/auditlog');
 
 module.exports = async (client) => {
-    //Bulk Delete
-    client.on(Events.MessageBulkDelete, async (messages) => {
-        const firstMessage = messages.first();
-        const channel = firstMessage.channel;
-        const guildId = channel.guild.id;
-        const data = await Audit_Log.findOne({
-          Guild: guildId
-        })
-        let logID;
-        if (data) {
-            logID = data.Channel
-        } else {
-            return;
-        }
-        const auditEmbed = new EmbedBuilder().setColor(theme.theme).setTimestamp().setFooter({ text: "Nexus Audit Log System"})
-        const auditChannel = client.channels.cache.get(logID);
-      
-        const htmlContent = generateHtmlTranscript(messages, channel, guildId);
-      
-        const transcriptFilePath = path.join(__dirname, 'transcripts', `transcript_${Date.now()}.html`);
-        fs.writeFileSync(transcriptFilePath, htmlContent);
-      
-        function generateHtmlTranscript(messages, channel, guildId) {
-            let html = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Bulk Delete</title>
-                </head>
-                <body>
-                    <h1>Transscript - Deleted Messages</h1>
-                    <p>Channel: ${channel.name} (ID: ${channel.id})</p>
-                    <p>Server ID: ${guildId}</p>
-                    <p>Amount of deleted messages: ${messages.size}</p>
-                    <ul>
-            `;
-        
-            messages.forEach(message => {
-                const content = message.content || '[Picture/File]';
-                html += `<li><strong>${message.author.tag}</strong>: ${content}</li>`;
-            });
-        
-            html += `
-                    </ul>
-                </body>
-                </html>
-            `;
-        
-            return html;
-        }
-      
-        auditEmbed.setTitle("Message Bulk Delete").addFields(
-            {name: "Messages Deleted:", value: `${messages.size}`, inline: false},
-            {name: "Channel:", value: `${messages.channel}`, inline: false},
-        )
-        await auditChannel.send({ 
-          embeds: [auditEmbed],
-          files: [transcriptFilePath],}).catch((err) => {return;});
-    })
+    client.on(Events.MessageDeleteBulk, async (messages) => {
+        let htmlContent = `
+<html>
+<head>
+<style>
+    body {
+        background-color: #36393f;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+    }
+    .chat {
+        margin: 10px;
+    }
+    .message {
+        border-bottom: 1px solid #4f545c;
+        padding: 5px;
+    }
+    .author {
+        font-weight: bold;
+    }
+    .content {
+        margin-left: 10px;
+    }
+    .embed {
+        background-color: #2f3136;
+        border-left: 4px solid #7289da;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    .embed-title {
+        font-weight: bold;
+        color: #ffffff;
+    }
+    .embed-description {
+        color: #ffffff;
+    }
+    .embed-field {
+        color: #ffffff;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="chat">`;
 
-}
+        messages.forEach(message => {
+            let messageContent = message.content;
+            let hasEmbed = message.embeds.length > 0;
+            let hasContent = messageContent !== '';
+
+            // Handle message content
+            if (hasContent) {
+                htmlContent += `<div class="message"><span class="author">${message.author.tag}:</span> <span class="content">${messageContent}</span></div>`;
+            }
+
+            // Handle embeds
+            if (hasEmbed) {
+                message.embeds.forEach(embed => {
+                    htmlContent += `<div class="embed">`;
+                    if (embed.title) htmlContent += `<div class="embed-title">${embed.title}</div>`;
+                    if (embed.description) htmlContent += `<div class="embed-description">${embed.description}</div>`;
+                    if (embed.fields) {
+                        embed.fields.forEach(field => {
+                            htmlContent += `<div class="embed-field"><strong>${field.name}</strong>: ${field.value}</div>`;
+                        });
+                    }
+                    htmlContent += `</div>`;
+                });
+            }
+        });
+
+        htmlContent += `</div></body></html>`;
+
+        fs.writeFileSync('transcript.html', htmlContent);
+        console.log('Transcript saved as transcript.html');
+    });
+};

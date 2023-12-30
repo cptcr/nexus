@@ -30,10 +30,9 @@ module.exports = (client) => {
             version: '9'
         }).setToken(process.env.token);
 
-        //Enable if you want by removing "/* and */"
-        /*(async () => {
+        (async () => {
             try {
-                console.log(`Started refreshing ${count} application (/) commands.`);
+                console.log(`-> Started refreshing ${count} application (/) commands.`);
 
                 await rest.put(
                     Routes.applicationCommands(clientId), {
@@ -41,11 +40,11 @@ module.exports = (client) => {
                     },
                 );
 
-                console.log(`Successfully reloaded ${count} application (/) commands.`);
+                console.log(`-> Successfully reloaded ${count} application (/) commands.`);
 
             } catch (error) {
                 console.error(error);
             }
-        })();*/
+        })();
     };
 };

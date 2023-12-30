@@ -1,4 +1,4 @@
-const { Interaction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, DataManager, PermissionsBitField } = require("discord.js");
+const { Interaction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, DataManager, PermissionsBitField, Embed } = require("discord.js");
 //blacklist user
 const blacklist = require('../Schemas.js/Blacklist/blacklist');
 const owner = require("../../owner.json").owners;
@@ -40,10 +40,23 @@ module.exports = {
         }
       } catch (error) {
         console.log(error);  
+
+        const embed = new EmbedBuilder({
+          fields: [
+            {name: "Command:", value:`/${interaction.commandName}`, inline: true},
+            {name: "User:", value:`${interaction.user}`, inline: true},
+            {name: "Error:", value: `${error}`, inline: false}
+          ],
+          title: "There was an error!"
+        }).setColor("Green").setDescription("https://discord.gg/nexushosting ")
+
+        const channel = await client.channels.cache.get(`${process.env.err}`)
         await interaction.reply({
-          content: 'There was an error while executing this command. Join discord.gg/nexcord to report any issues to the developers!',
+          embeds: [embed],
           ephemeral: true,
         });
+
+        await  channel.send({embeds: [embed.setDescription("Someone executed a command and got an error!")]})
       }
     }
 };
