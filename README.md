@@ -55,8 +55,8 @@ Info Point:
 </p>
 
 ## Credits
-Discord API Interaction - [discord.js](https://discord.js.org)
-JavaScript runtime environment - [NodeJS](https://nodejs.org/en)
-Code Editor - [Microsoft Visual Studio Code](https://code.visualstudio.com)
-Live Share - [Microsoft Live Share](https://visualstudio.microsoft.com/de/services/live-share/)
+Discord API Interaction - [discord.js](https://discord.js.org) <br>
+JavaScript runtime environment - [NodeJS](https://nodejs.org/en) <br>
+Code Editor - [Microsoft Visual Studio Code](https://code.visualstudio.com) <br>
+Live Share - [Microsoft Live Share](https://visualstudio.microsoft.com/de/services/live-share/) <br>
 Error Detection Tool - [Alexander Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
