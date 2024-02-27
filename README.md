@@ -6,10 +6,11 @@ Welcome to NEXUS, a project hosted by Toowake Development.
 
 ## Quick Links
 
-- **Panel**: [Nexhost Panel](https://panel.nexhost.xyz)
-- **Discord**: [Join Our Server](https://discord.gg/nexushosting)
-- **Website**: [Nexus Now (In Development)](https://nexusnow.de)
+- **Panel**: [Nexhost Panel](https://panel.toowake.host)
+- **Discord**: [Join Our Server](https://discord.gg/toowake)
+- **Website**: [Nexus Now (In Development)](https://toowake.live)
 - **Developer's Site**: [Toowake Development](https://toowake.dev)
+- **Leaderboard Beta**: [HERE](http://toowake.live:443/1121353922355929129/leaderboard)
 
 ## Getting Started
 
