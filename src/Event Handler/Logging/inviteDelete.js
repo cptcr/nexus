@@ -2,8 +2,6 @@ const { EmbedBuilder, Events } = require("discord.js");
 const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 
-//WORKING
-
 module.exports = async (client) => {
     //Invite Delete
     client.on(Events.InviteDelete, async (invite) => {
@@ -19,9 +17,11 @@ module.exports = async (client) => {
         }
         const auditEmbed = new EmbedBuilder().setColor(theme.theme).setTimestamp().setFooter({ text: "Nexus Audit Log System"})
         const auditChannel = client.channels.cache.get(logID);
+
+        const usr = invite.inviterId ? null : "NO ID FOUND";
       
         auditEmbed.setTitle("Invite Deleted").addFields(
-            {name: "User:", value: `<@${invite.user.id}>`, inline: false},
+            {name: "User:", value: `<@${usr}>`, inline: false},
             {name: "Invite Code:", value: `${invite.code}`, inline: false},
             {name: "Expires at:", value: `${invite.expiresAt}`, inline: false},
             {name: "Created at:", value: `${invite.createdAt}`, inline: false},

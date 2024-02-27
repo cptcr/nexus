@@ -50,13 +50,13 @@ module.exports = {
             break;
 
             case "invite": //if interaction then....
-            let url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.BOT}&permissions=10982195063927&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fz8nxPve4pn&response_type=code&scope=gdm.join%20applications.commands%20bot`;
             const embedxxxxx = new EmbedBuilder() //create a new embed
             .setColor("Purple") //color of the embed
             .setTitle("Bot invite") //Title of the embed
-            .setURL(url)
-            .setDescription(url) //URL of the Title
-            
+            .setURL("https://discord.com/api/oauth2/authorize?client_id=1046468420037787720&permissions=10982195063927&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fz8nxPve4pn&response_type=code&scope=gdm.join%20applications.commands%20bot")
+            .setDescription("Click [here](https://discord.com/api/oauth2/authorize?client_id=1046468420037787720&permissions=10982195063927&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fz8nxPve4pn&response_type=code&scope=gdm.join%20applications.commands%20bot) to invite the bot!") //URL of the Title
+            .setDescription("Invite the Bot!") //Description of the embed
+    
             await interaction.reply({ embeds: [embedxxxxx]}); //if interaction then reply with the embed
             break;
             case 'stats':

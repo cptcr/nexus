@@ -1,10 +1,9 @@
-const { EmbedBuilder, Events } = require('discord.js')
+const { EmbedBuilder, Events, PermissionsBitField } = require('discord.js')
 const theme = require("../../../embedConfig.json");
 const ghostSchema = require("../../Schemas.js/Ghostping/ghostpingSchema");
 const numSchema  = require("../../Schemas.js/Ghostping/ghostnum");
 
 module.exports = async (client) => {
-  
     //ghostping
     client.on(Events.MessageDelete, async message => {
      

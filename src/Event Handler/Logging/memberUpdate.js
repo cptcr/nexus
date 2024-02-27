@@ -1,54 +1,38 @@
-const { EmbedBuilder, Events } = require('discord.js');
-const theme = require('../../../embedConfig.json');
-const Audit_Log = require('../../Schemas.js/auditlog');
-
-//WORKING
+const { EmbedBuilder, Events } = require("discord.js");
+const theme = require("../../../embedConfig.json");
+const Audit_Log = require("../../Schemas.js/auditlog");
 
 module.exports = async (client) => {
     client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
-        let description = '';
-        let title = 'Member Update';
+        const auditEmbed = new EmbedBuilder()
+            .setColor(theme.theme)
+            .setTimestamp()
+            .setFooter({ text: "Nexus Audit Log System" });
 
-        // Check for role changes
-        const oldRoles = oldMember.roles.cache;
-        const newRoles = newMember.roles.cache;
-        const addedRoles = newRoles.filter(role => !oldRoles.has(role.id));
-        const removedRoles = oldRoles.filter(role => !newRoles.has(role.id));
+        const data = await Audit_Log.findOne({ Guild: oldMember.guild.id });
+        let logID = data ? data.Member : null;
+        if (!logID) return;
 
-        if (addedRoles.size > 0 || removedRoles.size > 0) {
-            title = 'Member Roles Updated';
-            description += addedRoles.size > 0 ? `**Roles Added**: ${addedRoles.map(r => r).join(', ')}\n` : '';
-            description += removedRoles.size > 0 ? `**Roles Removed**: ${removedRoles.map(r => r).join(', ')}\n` : '';
-        }
+        const auditChannel = client.channels.cache.get(logID);
+        const changes = [];
 
-        // Check for nickname change
         if (oldMember.nickname !== newMember.nickname) {
-            title = 'Member Nickname Updated';
-            description += `**Old Nickname**:   \`${oldMember.nickname || 'None'}\` \n**New Nickname**: \`${newMember.nickname || 'None'}\`\n`;
+            changes.push(`Nickname: \`${oldMember.nickname || 'None'}\` → \`${newMember.nickname || 'None'}\``);
         }
 
-        // Check for avatar change
-        if (oldMember.displayAvatarURL() !== newMember.displayAvatarURL()) {
-            title = 'Member Avatar Updated';
-            description += '**Avatar Updated**\n';
+        if (!oldMember.roles.cache.equals(newMember.roles.cache)) {
+            const oldRoles = oldMember.roles.cache.map(r => r).join(", ");
+            const newRoles = newMember.roles.cache.map(r => r).join(", ");
+            changes.push(`Roles: \`${oldRoles}\` → \`${newRoles}\``);
         }
 
-        // Send message if there was a change
-        if (description) {
-            const auditEmbed = new EmbedBuilder()
-                .setColor(theme.theme)
-                .setTitle(title)
-                .setDescription(description)
-                .setTimestamp()
-                .setFooter({ text: 'Nexus Audit Log System' });
+        if (changes.length === 0) return;
+        const changesText = changes.join('\n');
 
-            const data = await Audit_Log.findOne({ Guild: newMember.guild.id });
-            if (!data) return;
+        auditEmbed
+            .setTitle("Member Updated")
+            .addFields({ name: "Changes:", value: changesText });
 
-            const auditChannel = await client.channels.fetch(data.Channel).catch(() => null);
-            if (auditChannel) {
-                await auditChannel.send({ embeds: [auditEmbed] }).catch(console.error);
-            }
-        }
+        await auditChannel.send({ embeds: [auditEmbed] }).catch((err) => {});
     });
 };

@@ -22,14 +22,15 @@ module.exports = {
         const reason = options.getString("reason") || "No Reason given";
 
         //badges//
+        const mod = theme.category.mod["mod-panel"];
         const badges = {
-            BugHunterLevel1: '<:bughunter1:1110179125643194449> ',
-            BugHunterLevel2: '<:bughunter2:1110179225316634634>',
-            Partner: '<:discordpartner:1110179362688471100>',
-            PremiumEarlySupporter: '<:earlynitro:1110179543018377226>',
-            Staff: '<:discordstaff:1110179895671259196>',
-            VerifiedDeveloper: '<:developer:1110180079285325824>',
-            ActiveDeveloper: '<:activedev:1110180029016580237>',
+            BugHunterLevel1: mod.bughunter1,
+            BugHunterLevel2: mod.bughunter2,
+            Partner: mod.partner,
+            PremiumEarlySupporter: mod.earlysupporter,
+            Staff: mod.staff,
+            VerifiedDeveloper: mod.verified,
+            ActiveDeveloper: mod.activedev,
         };
 
         //some user staff
@@ -302,9 +303,7 @@ module.exports = {
                 });
 
                 await i.reply({ content: `<@${target.id}> has been timeouted for **1 Week**`, ephemeral: true});
-            }
-
-            
+            }    
         })
     }
 }

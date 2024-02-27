@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder, PermissionFlagsBits, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const levelSchema = require("../../Schemas.js/Leveling/level");
 const disabled = require("../../Schemas.js/Panel/Systems/xp");
 const theme = require("../../../embedConfig.json");
@@ -48,7 +48,15 @@ module.exports = {
             .setDescription(`\`\`\`${text}\`\`\``)
             .setTimestamp()
 
-            interaction.editReply({ embeds: [embed]})
+            const button = new ButtonBuilder({
+                label: "View in Web",
+                url: `http://85.215.62.5:3001/${interaction.guild.id}/leaderboard`,
+                style: ButtonStyle.Link
+            })
+            
+            const row = new ActionRowBuilder().addComponents(button)
+
+            interaction.editReply({ embeds: [embed], components: [row] });
          }
     }
 }

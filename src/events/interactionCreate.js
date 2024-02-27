@@ -48,9 +48,9 @@ module.exports = {
             {name: "Error:", value: `${error}`, inline: false}
           ],
           title: "There was an error!"
-        }).setColor("Green").setDescription("https://discord.gg/nexushosting ")
+        }).setColor("Green").setDescription("https://discord.gg/toowake")
 
-        const channel = await client.channels.cache.get(`${process.env.err}`)
+        const channel = await client.channels.cache.get("1127250005065994321")
         await interaction.reply({
           embeds: [embed],
           ephemeral: true,

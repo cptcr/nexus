@@ -2,8 +2,6 @@ const { EmbedBuilder, Events } = require("discord.js");
 const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 
-//WORKING
-
 module.exports = async (client) => {
     //Channel Create
     client.on(Events.ChannelCreate, async (channel) => {

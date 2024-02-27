@@ -3,14 +3,8 @@ const mongodbURL = process.env.MONGODBURL;
 const { ActivityType, EmbedBuilder, Embed } = require(`discord.js`);
 const cmds = require(".././Schemas.js/commandCount");
 mongoose.set('strictQuery', false);
-
 const main = require(".././Schemas.js/main")
-
 const si = require('systeminformation');
-
-
-
-
 const fs = require("fs");
 const index = require("../index");
 let client2 = index.client;
@@ -70,7 +64,7 @@ module.exports = {
               // Getting RAM information
               const memInfo = await si.memLayout();
               memInfo.forEach((mem, index) => {
-                  console.log(`-> RAM Slot ${index + 1}: ${mem.manufacturer} ${mem.partNum}`);
+                  console.log(`-> RAM Slot ${index + 1}: ${mem.manufacturer || "No data available"} ${mem.partNum}`);
               });
       
               // Getting GPU information

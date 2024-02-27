@@ -8,5 +8,18 @@
         "black": [0, 0, 0],
         "blue": [0, 0, 255],
         "purple": [127, 40, 127]
+    },
+    "category": {
+        "mod": {
+            "mod-panel": {
+                "bughunter1": "<:bughunter:1203766902829092915>",
+                "bughunter2": "<:bughunter2:1203767012262678548>",
+                "activedev": "<:activedev:1121382773010206821>",
+                "partner": "<:Discord_Partner:1133080471539036221>",
+                "earlysupporter": "<:early:1133080653219504149>",
+                "staff": "<:Discord_Staff:1133080553898397747>",
+                "earlydev": "<:earlydev:1121382873346363544>"
+            }
+        }
     }
 }

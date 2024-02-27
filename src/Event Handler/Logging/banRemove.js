@@ -2,8 +2,6 @@ const { EmbedBuilder, Events } = require('discord.js');
 const theme = require('../../../embedConfig.json');
 const Audit_Log = require('../../Schemas.js/auditlog');
 
-//WORKING
-
 module.exports = async (client) => {
     client.on(Events.GuildBanRemove, async (ban) => {
         const auditEmbed = new EmbedBuilder()

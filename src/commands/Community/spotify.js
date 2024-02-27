@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder, Embed } = require('discord.js');
 const canvacord = require('canvacord');
 const theme = require("../../../embedConfig.json");
 module.exports = {
@@ -7,8 +7,16 @@ module.exports = {
     .setDescription('see a users current spotify status')
     .addUserOption(option => option.setName('user').setDescription('see a users current spotify status').setRequired(true)),
     async execute(interaction) {
+
+        const embed = new EmbedBuilder({
+            title: "toowake's Spotify Status",
+        }).setImage("https://cdn.discordapp.com/attachments/970775929481744423/1202645106851848292/spotify.png?ex=65ce3589&is=65bbc089&hm=751264f6c3ef8f6c102849a8a174a941178c00a803273b729963def1abdea99a&")
+
+        return await interaction.reply({
+            embeds: [embed]
+        })
  
-        let user = interaction.options.getMember('user');
+        /*let user = interaction.options.getMember('user');
  
         if (user.bot) return interaction.reply({ content: 'a bot does not have a spotify status', ephemeral: true});
  
@@ -41,6 +49,6 @@ module.exports = {
             
  
             await interaction.reply({files: [attachments] })
-        }
+        } */
     }
 }

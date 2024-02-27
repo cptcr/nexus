@@ -32,7 +32,7 @@ module.exports = (client) => {
 
         (async () => {
             try {
-                console.log(`-> Started refreshing ${count} application (/) commands.`);
+                //console.log(`Started refreshing ${count} application (/) commands.`);
 
                 await rest.put(
                     Routes.applicationCommands(clientId), {

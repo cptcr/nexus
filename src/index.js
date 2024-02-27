@@ -2,14 +2,12 @@ const { AttachmentBuilder, MessageType, Client, Partials, GatewayIntentBits, Per
 const fs = require('fs');
 
 const functionsExt = require("../functions")
-
 const client = new Client({ 
   intents: [
         GatewayIntentBits.Guilds, 
         GatewayIntentBits.GuildMessages, 
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
-        //GatewayIntentBits.GuildPresences,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildInvites,
         GatewayIntentBits.GuildModeration,
@@ -34,18 +32,6 @@ const Discord = require('discord.js');
 
 client.commands = new Collection();
 
-//const shards = client.shard.count;
-
-const OmenList = require("./omen.json");
-const OmenListToken = OmenList.token;
-setInterval(() => {
-  fetch('https://list.soydaddy.space/api/bots/stats', { 
-      headers: { 'Authorization': OmenListToken, 'serverCount': client.guilds.cache.size, 'shardCount': 1, 'Content-Type': 'application/json' },
-      method: "POST"
-    })
-}, 60 * 10000);
-
-
 require('dotenv').config();
 
 const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
@@ -58,7 +44,7 @@ const mongoose = require('mongoose');
 const mongodbURL = process.env.MONGODBURL;
 
 //MONGODB Check
-if (!mongodbURL) return console.log("Error: Cannot find MongodbURL. File: *.env*");
+if (!mongodbURL) return console.log("╬ Error: Cannot find MongodbURL. File: *.env*");
 mongoose.set('strictQuery', false);
 try {
   mongoose.connect(mongodbURL || '', {
@@ -69,16 +55,22 @@ try {
   process.exit(1)
 }
 
-
-
-process.on('unhandledRejection', async (reason, promise) => {
-  functionsExt.generateError("Unhandled Rejection", reason, promise)
+process.on('unhandledRejection', (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  // Optionally use functionsExt.generateError if it logs the details as desired
+  functionsExt.generateError("Unhandled Rejection", reason.stack ? reason + '\n' + reason.stack : reason, promise);
 });
+
 process.on('uncaughtException', (err) => {
-  functionsExt.generateError("Uncaught Exception", err)
+  console.error("Uncaught Exception:", err);
+  // Optionally use functionsExt.generateError if it logs the details as desired
+  functionsExt.generateError("Uncaught Exception", err.stack ? err + '\n' + err.stack : err);
 });
-process.on('uncaughtExceptionMonitor', (err, origin) => { 
-  functionsExt.generateError("Uncaught Exception Monitor", err, origin)
+
+process.on('uncaughtExceptionMonitor', (err, origin) => {
+  console.error("Uncaught Exception Monitor:", err, "Origin:", origin);
+  // Optionally use functionsExt.generateError if it logs the details as desired
+  functionsExt.generateError("Uncaught Exception Monitor", err.stack ? err + '\n' + err.stack : err, origin);
 });
 
 
@@ -101,3 +93,36 @@ fs.readdirSync('./src/Event Handler').forEach((dir) => {
 });
 
 console.log(`Found ` ,count, ` Event Files`)
+
+const express = require('express');
+const app = express();
+const lead = require('./Schemas.js/Leveling/level');
+const PORT = 3000;
+
+app.set('view engine', 'ejs');
+
+app.get("/:guildId/leaderboard", async (req, res) => {
+  try {
+      const { guildId } = req.params;
+      const leaderboardData = await lead.find({ Guild: guildId }).sort({ XP: -1 }).limit(10);
+
+      const usersWithDetails = await Promise.all(leaderboardData.map(async (user) => {
+          const discordUser = await client.users.fetch(user.User); 
+          return {
+              avatarUrl: discordUser.displayAvatarURL(),
+              username: discordUser.username,
+              level: user.Level,
+              xp: user.XP
+          };
+      }));
+      
+      res.render('leaderboardPage', { leaderboard: usersWithDetails });
+  } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+  }
+});
+
+
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            background-color: #121212; /* Dark background for the page */
+            color: #ffffff; /* Light text for better contrast */
+            font-family: Arial, sans-serif; /* A more modern font */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1e1e1e; /* Dark background for the table */
+            border-radius: 10px; /* Rounded corners for the table */
+            overflow: hidden; /* Ensures the border-radius clips the content */
+            border: 1px solid #333333; /* Slightly lighter border for some depth */
+        }
+        th, td {
+            border-bottom: 1px solid #333333; /* Lighter border for rows */
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #6f00ff; /* Purple background for headers */
+            color: #ffffff; /* White text color */
+        }
+        h1 {
+            color: #6f00ff; /* Purple text color for the heading */
+        }
+        img {
+            border-radius: 50%; /* Circular images for avatars */
+        }
+    </style>
+</head>
+<body>
+    <h1>Leaderboard</h1>
+    <table>
+        <tr>
+            <th>Avatar</th>
+            <th>Username</th>
+            <th>Level</th>
+            <th>XP</th>
+        </tr>
+        <% leaderboard.forEach(function(user) { %>
+            <tr>
+                <td><img src="<%= user.avatarUrl %>" alt="User Avatar" style="width: 50px; height: 50px;"></td>
+                <td><%= user.username %></td>
+                <td><%= user.level %></td>
+                <td><%= user.xp %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

@@ -38,7 +38,7 @@ module.exports = {
         });
 
         //send an ephemeral message to verify that the webhook send this message
-        await interaction.reply({
+        return await interaction.reply({
             content: `<@${member.id}> has been impersonated below!`,
             ephemeral: true
         });

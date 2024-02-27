@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Events, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require("discord.js");
+const { Client, Events, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const Giveaway = require("../../Schemas.js/New/giveaway");
 const { ButtonBuilder } = require("@discordjs/builders");
 
@@ -23,7 +23,14 @@ module.exports = async (client) => {
                     await giveaway.save();
                     await interaction.reply({ content: "You have successfully joined the giveaway!", ephemeral: true });
                 } else {
-                    await interaction.reply({ content: "You have already joined this giveaway.", ephemeral: true });
+                    const leaveButton = new ButtonBuilder()
+                        .setCustomId(`giveaway-leave-${giveaway.id}`)
+                        .setLabel("Leave Giveaway")
+                        .setStyle(ButtonStyle.Danger);
+
+                    const row = new ActionRowBuilder().addComponents(leaveButton);
+
+                    await interaction.reply({ content: "You have already joined this giveaway.", ephemeral: true, components: [row] });
                 }
             } else if (customId.startsWith("giveaway-leave")) {
                 if (giveaway.participants.includes(interaction.user.id)) {
@@ -35,32 +42,41 @@ module.exports = async (client) => {
                 }
             }
 
-            updateGiveawayMessage(client, giveaway, interaction.user.id);
+            updateGiveawayMessage(client, giveaway);
         }
     });
 };
 
-async function updateGiveawayMessage(client, giveaway, userId) {
+async function updateGiveawayMessage(client, giveaway) {
     try {
         const channel = await client.channels.fetch(giveaway.channelId);
-        const message = await channel.messages.fetch(giveaway.messageId);
+        
+        // Check if the message exists
+        const message = await channel.messages.fetch(giveaway.messageId)
+            .catch(error => {
+                console.error("Error fetching message:", error);
+                return null; // Return null if the message does not exist
+            });
+
+        if (!message) {
+            console.error("Message does not exist.");
+            return;
+        }
 
         const joinButton = new ButtonBuilder()
-        .setCustomId(`giveaway-join-${giveaway.id}`)
-        .setLabel("Join Giveaway")
-        .setStyle(ButtonStyle.Primary);
+            .setCustomId(`giveaway-join-${giveaway.id}`)
+            .setLabel("Join Giveaway")
+            .setStyle(ButtonStyle.Primary);
 
-        const amountButton = new ButtonBuilder()
-        .setCustomId("none")
-        .setLabel(`Participants: ${giveaway.participants.length}`)
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(true)
+        const participantsButton = new ButtonBuilder()
+            .setCustomId("none")
+            .setLabel(`Participants: ${giveaway.participants.length}`)
+            .setStyle(ButtonStyle.Primary)
+            .setDisabled(true);
 
-        const row = new ActionRowBuilder().addComponents(
-            joinButton, amountButton
-        );
+        const row = new ActionRowBuilder().addComponents(joinButton, participantsButton);
 
-        await message.edit({ embeds: [embed], components: [row] });
+        await message.edit({ components: [row] });
     } catch (error) {
         console.error("Error updating giveaway message:", error);
     }
