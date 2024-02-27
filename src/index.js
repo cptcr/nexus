@@ -99,30 +99,69 @@ const app = express();
 const lead = require('./Schemas.js/Leveling/level');
 const PORT = 3000;
 
+const rateLimitWindowMs = 15 * 60 * 1000; // 15 minutes in milliseconds
+const maxRequestsPerWindow = 100; // Maximum number of requests per IP within window
+const requestCounts = new Map(); // Store request counts for each IP
+
+// Middleware to limit requests
+function rateLimiter(req, res, next) {
+    const ip = req.ip;
+    const now = Date.now();
+    const windowStartTimestamp = now - rateLimitWindowMs;
+    
+    if (!requestCounts.has(ip)) {
+        requestCounts.set(ip, []);
+    }
+
+    const recentRequests = requestCounts.get(ip).filter(timestamp => timestamp > windowStartTimestamp);
+    recentRequests.push(now);
+    requestCounts.set(ip, recentRequests);
+
+    if (recentRequests.length > maxRequestsPerWindow) {
+        res.status(429).send("Too many requests, please try again later.");
+    } else {
+        next();
+    }
+}
+
+// Clean up old entries
+setInterval(() => {
+    const now = Date.now();
+    const windowStartTimestamp = now - rateLimitWindowMs;
+    requestCounts.forEach((timestamps, ip) => {
+        const recentRequests = timestamps.filter(timestamp => timestamp > windowStartTimestamp);
+        if (recentRequests.length > 0) {
+            requestCounts.set(ip, recentRequests);
+        } else {
+            requestCounts.delete(ip);
+        }
+    });
+}, rateLimitWindowMs);
+
 app.set('view engine', 'ejs');
 
+app.use("/:guildId/leaderboard", rateLimiter);
+
 app.get("/:guildId/leaderboard", async (req, res) => {
-  try {
-      const { guildId } = req.params;
-      const leaderboardData = await lead.find({ Guild: guildId }).sort({ XP: -1 }).limit(10);
+    try {
+        const { guildId } = req.params;
+        const leaderboardData = await lead.find({ Guild: guildId }).sort({ XP: -1 }).limit(10);
 
-      const usersWithDetails = await Promise.all(leaderboardData.map(async (user) => {
-          const discordUser = await client.users.fetch(user.User); 
-          return {
-              avatarUrl: discordUser.displayAvatarURL(),
-              username: discordUser.username,
-              level: user.Level,
-              xp: user.XP
-          };
-      }));
-      
-      res.render('leaderboardPage', { leaderboard: usersWithDetails });
-  } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-  }
+        const usersWithDetails = await Promise.all(leaderboardData.map(async (user) => {
+            const discordUser = await client.users.fetch(user.User); 
+            return {
+                avatarUrl: discordUser.displayAvatarURL(),
+                username: discordUser.username,
+                level: user.Level,
+                xp: user.XP
+            };
+        }));
+        
+        res.render('leaderboardPage', { leaderboard: usersWithDetails });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 });
-
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
