@@ -45,7 +45,7 @@ Info Point:
 
 <p align="center">
 
-[![Discord Server](https://img.shields.io/discord/1121353922355929129?label=Join%20Our%20Discord&logo=discord&style=flat-square)](https://discord.gg/nexushosting)
+[![Discord Server](https://img.shields.io/discord/1121353922355929129?label=Join%20Our%20Discord&logo=discord&style=flat-square)](https://discord.gg/toowake)
 
 [![Support on Patreon](https://img.shields.io/badge/Patreon-support-ff424d?style=flat-square&logo=patreon)](https://patreon.com/toowake)
 
