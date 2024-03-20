@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Plan</title>
+    <style>
+        body {
+            background-color: #121212; /* Dark background for the page */
+            color: #ffffff; /* Light text for better contrast */
+            font-family: Arial, sans-serif; /* A more modern font */
+        }
+        .stream-plan {
+            margin: 20px;
+            padding: 20px;
+            background-color: #1e1e1e; /* Dark background for the content */
+            border-radius: 10px; /* Rounded corners */
+            border: 1px solid #333333; /* Slightly lighter border for some depth */
+        }
+        h1 {
+            color: #6f00ff; /* Purple text color for the heading */
+        }
+        h2 {
+            color: #ffffff; /* White text color */
+        }
+        p {
+            color: #ffffff; /* White text color for paragraphs */
+        }
+    </style>
+</head>
+<body>
+    <div class="stream-plan">
+        <h1>Stream Plan for Guild: <%= streamPlan.Guild %></h1>
+        <h2>Streamer: <%= streamPlan.Streamer %></h2>
+        <p>Platform: <%= streamPlan.Platform %></p>
+        <p>Monday: <%= streamPlan.Monday %></p>
+        <p>Tuesday: <%= streamPlan.Tuesday %></p>
+        <p>Wednesday: <%= streamPlan.Wednesday %></p>
+        <p>Thursday: <%= streamPlan.Thursday %></p>
+        <p>Friday: <%= streamPlan.Friday %></p>
+        <p>Saturday: <%= streamPlan.Saturday %></p>
+        <p>Sunday: <%= streamPlan.Sunday %></p>
+    </div>
+</body>
+</html>

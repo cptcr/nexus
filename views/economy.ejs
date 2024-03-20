@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Warnings</title>
+    <title>Economy Leaderboard</title>
     <style>
         body {
             background-color: #121212;
@@ -27,31 +27,27 @@
             background-color: #6f00ff;
             color: #ffffff;
         }
-        .warn-info {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
-    <h1>User Warnings</h1>
-
-    <div class="warn-info">
-        <table>
+    <h1>Economy Leaderboard</h1>
+    <table>
+        <tr>
+            <th>Avatar</th>
+            <th>Username</th>
+            <th>Bank Amount</th>
+            <th>Wallet Amount</th>
+            <th>Total Amount</th>
+        </tr>
+        <% economyLeaderboard.forEach(function(user) { %>
             <tr>
-                <th>Warn ID</th>
-                <th>Moderator</th>
-                <th>Reason</th>
-                <th>Date</th>
+                <td><img src="PLACEHOLDER_FOR_AVATAR_URL" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;"></td>
+                <td>PLACEHOLDER_FOR_USERNAME</td>
+                <td><%= user.Bank %></td>
+                <td><%= user.Wallet %></td>
+                <td><%= user.Total %></td>
             </tr>
-            <% warnings.forEach(function(warn) { %>
-                <tr>
-                    <td><%= warn.warnId %></td>
-                    <td><%= warn.moderator %></td>
-                    <td><%= warn.reason %></td>
-                    <td><%= warn.date %></td>
-                </tr>
-            <% }); %>
-        </table>
-    </div>
+        <% }); %>
+    </table>
 </body>
 </html>

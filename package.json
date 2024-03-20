@@ -2,7 +2,7 @@
   "name": "nexus",
   "version": "5.0.0",
   "description": "Aura Bot version 2",
-  "main": "src/index.js",
+  "main": "shard.js",
   "scripts": {},
   "author": "toowake",
   "license": "MIT",

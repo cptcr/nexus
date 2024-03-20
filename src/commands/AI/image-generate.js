@@ -6,7 +6,7 @@ const {
     SlashCommandBuilder,
 } = require('discord.js');
 
-const REPLICATE_API_KEY = "r8_QpBn6HfIGa2hQ01oiwZVNsspPvyoBLW1mPYMZ"
+const REPLICATE_API_KEY = process.env.REPLICATE
 
 const models = [
     {

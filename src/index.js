@@ -1,5 +1,15 @@
-const { AttachmentBuilder, MessageType, Client, Partials, GatewayIntentBits, PermissionFlagsBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection, Events, AuditLogEvent, MessageCollector, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require(`discord.js`);
+const { AttachmentBuilder, MessageType, Client, Partials, GatewayIntentBits, PermissionFlagsBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection, Events, AuditLogEvent, MessageCollector, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const fs = require('fs');
+const mongoose = require('mongoose'); // Import mongoose
+const process = require("node:process");
+require('dotenv').config();
+
+// MongoDB Connection Setup
+mongoose.connect(process.env.MONGODBURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => console.log('Connected to MongoDB!'))
+.catch(err => console.error('Could not connect to MongoDB.', err));
 
 const functionsExt = require("../functions")
 const client = new Client({ 
@@ -32,28 +42,11 @@ const Discord = require('discord.js');
 
 client.commands = new Collection();
 
-require('dotenv').config();
-
 const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js")); 
 const commandFolders = fs.readdirSync("./src/commands");
 
 //Anti Crash System
-const process = require("node:process");
-const mongoose = require('mongoose');
-const mongodbURL = process.env.MONGODBURL;
-
-//MONGODB Check
-if (!mongodbURL) return console.log("╬ Error: Cannot find MongodbURL. File: *.env*");
-mongoose.set('strictQuery', false);
-try {
-  mongoose.connect(mongodbURL || '', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-} catch (err) {
-  process.exit(1)
-}
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
@@ -94,74 +87,4 @@ fs.readdirSync('./src/Event Handler').forEach((dir) => {
 
 console.log(`Found ` ,count, ` Event Files`)
 
-const express = require('express');
-const app = express();
-const lead = require('./Schemas.js/Leveling/level');
-const PORT = 3000;
-
-const rateLimitWindowMs = 15 * 60 * 1000; // 15 minutes in milliseconds
-const maxRequestsPerWindow = 100; // Maximum number of requests per IP within window
-const requestCounts = new Map(); // Store request counts for each IP
-
-// Middleware to limit requests
-function rateLimiter(req, res, next) {
-    const ip = req.ip;
-    const now = Date.now();
-    const windowStartTimestamp = now - rateLimitWindowMs;
-    
-    if (!requestCounts.has(ip)) {
-        requestCounts.set(ip, []);
-    }
-
-    const recentRequests = requestCounts.get(ip).filter(timestamp => timestamp > windowStartTimestamp);
-    recentRequests.push(now);
-    requestCounts.set(ip, recentRequests);
-
-    if (recentRequests.length > maxRequestsPerWindow) {
-        res.status(429).send("Too many requests, please try again later.");
-    } else {
-        next();
-    }
-}
-
-// Clean up old entries
-setInterval(() => {
-    const now = Date.now();
-    const windowStartTimestamp = now - rateLimitWindowMs;
-    requestCounts.forEach((timestamps, ip) => {
-        const recentRequests = timestamps.filter(timestamp => timestamp > windowStartTimestamp);
-        if (recentRequests.length > 0) {
-            requestCounts.set(ip, recentRequests);
-        } else {
-            requestCounts.delete(ip);
-        }
-    });
-}, rateLimitWindowMs);
-
-app.set('view engine', 'ejs');
-
-app.use("/:guildId/leaderboard", rateLimiter);
-
-app.get("/:guildId/leaderboard", async (req, res) => {
-    try {
-        const { guildId } = req.params;
-        const leaderboardData = await lead.find({ Guild: guildId }).sort({ XP: -1 }).limit(10);
-
-        const usersWithDetails = await Promise.all(leaderboardData.map(async (user) => {
-            const discordUser = await client.users.fetch(user.User); 
-            return {
-                avatarUrl: discordUser.displayAvatarURL(),
-                username: discordUser.username,
-                level: user.Level,
-                xp: user.XP
-            };
-        }));
-        
-        res.render('leaderboardPage', { leaderboard: usersWithDetails });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-    }
-});
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const shard = client.shard.id

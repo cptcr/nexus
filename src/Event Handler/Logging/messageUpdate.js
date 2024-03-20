@@ -1,6 +1,8 @@
-const { EmbedBuilder, Events, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const { EmbedBuilder, Events, AuditLogEvent, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
+const log_actions = require("../../Schemas.js/logactions");
+const token = require("../../../encrypt").token(5);
 
 module.exports = async (client) => {
     /*const { id, channel_id, guild_id, author, timestamp, type } = data;*/

@@ -1,4 +1,4 @@
-const { EmbedBuilder, Events } = require('discord.js')
+const { EmbedBuilder, Events, ChannelType } = require('discord.js')
 const theme = require("../../../embedConfig.json");
 const joinschema = require('../../Schemas.js/Join to create/jointocreate');
 const joinchannelschema = require('../../Schemas.js/Join to create/jointocreatechannels');
