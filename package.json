@@ -1,20 +1,19 @@
 {
   "name": "nexus",
-  "version": "6.0.0",
-  "description": "Nexus Bot v6",
+  "version": "5.0.0",
+  "description": "Aura Bot version 2",
   "main": "index.js",
   "scripts": {
     "start": "node .",
     "nexus": "node ."
   },
   "author": "toowake",
-  "author2": "soydaddy",
   "license": "MIT",
   "repository": {},
   "keywords": [
     "nexus"
   ],
-  "homepage": "https://toowake.dev",
+  "homepage": "https://nexus.toowake.repl.co",
   "dependencies": {
     "@discordjs/builders": "^1.7.0",
     "@discordjs/collection": "^1.5.3",
@@ -79,6 +78,7 @@
     "rss-parser": "^3.13.0",
     "superagent": "^8.1.2",
     "systeminformation": "^5.21.17",
+    "undici": "^6.15.0",
     "util": "^0.12.5",
     "wikijs": "^6.4.1",
     "youtube-notification": "^1.1.0"

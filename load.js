@@ -9,6 +9,8 @@ const https = require("https");
 const hostname = "toowake.live";
 const authRouter = require('./express/dashboard/auth');
 
+var mongooseStatus = false
+
 // MongoDB Connection
 async function connectToMongoDB() {
     try {
@@ -20,18 +22,16 @@ async function connectToMongoDB() {
         .catch(err => console.error('Could not connect to MongoDB:', err));
 
         mongoose.connection.on('connected', () => {
-            console.log('Mongoose connected to DB.');
+            mongooseStatus = true;
         });
         
         mongoose.connection.on('error', (err) => {
-            console.error('Mongoose connection error:', err);
+            mongooseStatus = false;
         });
         
         mongoose.connection.on('disconnected', () => {
-            console.log('Mongoose disconnected.');
+            mongooseStatus = false;
         });
-
-        console.log('Connected to MongoDB successfully.');
     } catch (error) {
         console.error('Failed to connect to MongoDB:', error);
         process.exit(1); 
@@ -57,7 +57,6 @@ async function getSystemInfo() {
 
 // Main function to run the application
 async function main() { 
-    await getSystemInfo();
     
     const amountShards =  "auto"; //parseInt(process.env.SHARDS) ||
 
@@ -70,7 +69,8 @@ async function main() {
 
     manager.on('shardCreate', shard => console.log("Launched Shard: ", `${shard.id + 1}`));
     manager.spawn().catch(console.error);
-
+    if (process.env.SITE === 'on') {
+        
     // Express Setup
     const app = express();
     const PORT = process.env.PORT || 3129;
@@ -87,6 +87,7 @@ async function main() {
     });
 
     app.listen(PORT,  'localhost', () => console.log("Server running on port ", `${PORT}`));
+    }
 }
 
 // Execute the main function
@@ -96,3 +97,5 @@ main().catch(error => {
 });
 
 connectToMongoDB();
+
+module.exports = {mongooseStatus}

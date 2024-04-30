@@ -1,4 +1,5 @@
 var count = 0;
+var eventsStatus = false;
 
 module.exports = (client) => {
     client.handleEvents = async (eventFiles, path) => {
@@ -11,7 +12,7 @@ module.exports = (client) => {
                 client.on(event.name, (...args) => event.execute(...args, client));
             }
         }
-
+        eventsStatus = true
         //Enable if you want by removing "/* and */"
         /*(async () => {
             try {
@@ -24,5 +25,5 @@ module.exports = (client) => {
             }
         })();*/
     };
+    return { getECount: count, getEventsStatus: eventsStatus };
 }
-

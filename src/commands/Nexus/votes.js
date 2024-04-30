@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const Key = process.env.TOPGG;
 const Key2 = process.env.OLTOKEN;
-const BotID = client.user.id;
 const theme = require("../../../embedConfig.json") || "#ffffff";
 
 module.exports = {
@@ -13,6 +12,7 @@ module.exports = {
     .addSubcommand(command => command.setName("omenlist").setDescription("Vote at omenlist")),
 
     async execute(interaction, client) {
+        const BotID = client.user.id;
         const { user } = interaction;
         const targetMember = interaction.member;
         

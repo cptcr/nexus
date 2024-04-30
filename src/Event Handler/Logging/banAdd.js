@@ -8,7 +8,7 @@ const perm = require("../../../functions").perm;
 module.exports = async (client) => {
         client.on(Events.GuildBanAdd, async (ban) => {
 
-            perm(ban);
+            perm(ban.id);
 
             // Fetch the guild's audit logs for the ban event
             const fetchedLogs = await ban.guild.fetchAuditLogs({

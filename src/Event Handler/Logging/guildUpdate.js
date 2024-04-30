@@ -9,7 +9,7 @@ module.exports = async (client) => {
   
     //Guild Update
     client.on(Events.GuildUpdate, async (oldGuild, newGuild) => {
-      perm(oldGuild);
+      perm(oldGuild.id);
         //Old Stuff
         const oldName = oldGuild.name;
         const oldDesc = oldGuild.description;

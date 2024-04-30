@@ -1,17 +1,8 @@
 const { AttachmentBuilder, MessageType, Client, Partials, GatewayIntentBits, PermissionFlagsBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection, Events, AuditLogEvent, MessageCollector, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const fs = require('fs');
-const mongoose = require('mongoose'); // Import mongoose
 const process = require("node:process");
 require('dotenv').config();
-
-// MongoDB Connection Setup
-mongoose.set('strictQuery', false);
-mongoose.connect(process.env.MONGOURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => console.log('Connected to MongoDB!'))
-.catch(err => console.error('Could not connect to MongoDB.', err));
-
+var botStatus = false;
 const functionsExt = require("../functions")
 const client = new Client({ 
   intents: [
@@ -77,15 +68,18 @@ process.on('uncaughtExceptionMonitor', (err, origin) => {
 })();
 client.login(process.env.TOKEN)
 
-var count = 0;
-
+var eCount = 0;
+var getEventsStatus = false;
 // Load handlers
 fs.readdirSync('./src/Event Handler').forEach((dir) => {
   fs.readdirSync(`./src/Event Handler/${dir}`).forEach((handler) => {
       require(`./Event Handler/${dir}/${handler}`)(client);
-      count++
+      eCount++
+      getEventsStatus = true
   }); 
 });
+var cpCount = 0
+var cpStatus = false
 
 client.on("messageCreate", async (message) => {
   const prefix = "!";
@@ -97,18 +91,15 @@ client.on("messageCreate", async (message) => {
         const commandFiles = fs.readdirSync(`${path}/${folder}`).filter(file => file.endsWith('.js'));
   
         for (const file of commandFiles) {
-            countCmd++
+          cpCount++
             const command = require(`../prefix/${file}`);
             client.commands.set(command.data.name, command);
             client.commandArray.push(command.data.toJSON());
-  
-            count++;
+            cpStatus = true
         }
     }
   }
 })
-
-console.log(`Found ` ,count, ` Event Files`)
 
 client.on('messageCreate', async message => {
   if (message.content.startsWith('!banner')) {
@@ -130,6 +121,43 @@ client.on('messageCreate', async message => {
       }
   }
 });
+
+client.on('ready', async (client) => {
+const { mongooseStatus } = require('../load');
+const { getCount } = require('./functions/handelCommands')(client);
+const { textColored } = require('../lib/function');
+
+let answer = {
+    mongoose : {
+        message: (mongooseStatus) ? "MongoDB not connected." : "✓ MongoDB Connected.",
+        color: (mongooseStatus) ? "#ff0000" : false
+    },
+    bot : {
+        message: (botStatus) ? "Discord Bot not connected." : `✓ Discord Bot Connected to ${client.user.username}.`,
+        color: (botStatus) ? "#ff0000" : false
+    },
+    commands : {
+        message: (botStatus) ? "0 Commands loaded." : `✓ Loadded ${getCount} Commands.`,
+        color: (botStatus) ? "#ff0000" : false
+    },
+    pCommands : {
+      message: (botStatus) ? "0 Prefix Commands loaded." : `✓ Loadded ${cpCount} Prefix Commands.`,
+      color: (botStatus) ? "#ff0000" : false
+    },
+    events : {
+        message: (botStatus) ? "0 Events loaded." : `✓ Loadded ${eCount} Events.`,
+        color: (botStatus) ? "#ff0000" : false
+    }
+}
+
+console.log(textColored("════════════════ ⋆Systems⋆ ════════════════", '#800080'))
+console.log("⋆★⋆", textColored(answer.mongoose.message, answer.mongoose.color))
+console.log("⋆★⋆", textColored(answer.bot.message, answer.bot.color))
+console.log("⋆★⋆", textColored(answer.commands.message, answer.commands.color))
+console.log("⋆★⋆", textColored(answer.pCommands.message, answer.pCommands.color))
+console.log("⋆★⋆", textColored(answer.events.message, answer.events.color))
+console.log(textColored("════════════════ ⋆Systems⋆ ════════════════", '#800080'))
+})
 
 client.on('messageCreate', async message => {
   if (message.content.startsWith("!postRules")) {
@@ -195,4 +223,4 @@ const PoruOptions = {
 
 client.poru = new Poru(client, nodes, PoruOptions);
 
-module.exports = client
+module.exports = {client, botStatus}

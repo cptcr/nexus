@@ -8,7 +8,7 @@ const perm = require("../../../functions").perm;
 module.exports = async (client) => {
     //Channel Update
     client.on(Events.ChannelUpdate, async (oldChannel, newChannel) => {
-        perm(oldChannel);
+        perm(oldChannel.id);
         if (oldChannel.parentId === "1167049272265547796" || newChannel.parentId === "1167049272265547796") {
             return;
         }

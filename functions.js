@@ -98,11 +98,13 @@ function convertUnix(milliseconds) {
 }
 
 const {PermissionFlagsBits} = require("discord.js");
+const { client } = require("./src");
 const clientId = "1046468420037787720";
 
 async function perm(v) {
     try {
-        const member = await v.guild.members.fetch(clientId);
+        const guild = await client.guilds.fetch(v)
+        const member = await guild.members.fetch(clientId);
         if (!member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
             return;
         }
