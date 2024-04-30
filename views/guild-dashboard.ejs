@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guild Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="guild-dashboard-container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="/dashboard/<%= guild.id %>">Home</a></li>
+                    <li><a href="/dashboard/<%= guild.id %>/embed-builder">Embed Builder</a></li>
+                    <li><a href="/dashboard/<%= guild.id %>/warns">Warns</a></li>
+                    <li><a href="/dashboard/<%= guild.id %>/leaderboard">Leaderboard</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="guild-content">
+            <h1>Welcome to <%= guild.name %> Dashboard</h1>
+            <!-- Content here -->
+        </main>
+    </div>
+</body>
+</html>

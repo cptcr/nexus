@@ -32,8 +32,8 @@ module.exports = {
             case "privacy-policy":
                 const embedPP = new EmbedBuilder()
                 .setTitle("Privacy Policy")
-                .setURL(`${process.env.privacy-policy}`)
-                .setDescription(`You can find our privacy policy here: \n${process.env.privacy-policy}`)
+                .setURL(`${process.env.PRIVACY}`)
+                .setDescription(`You can find our privacy policy here: \n${process.env.PRIVACY}`)
                 .setColor(theme.theme)
         
                 await interaction.reply({ embeds: [embedPP] });
@@ -42,8 +42,8 @@ module.exports = {
             case "terms-of-service":
                 const embedTOS = new EmbedBuilder()
                 .setTitle("Terms of Service")
-                .setURL(`${process.env.tos}`)
-                .setDescription(`You can find our terms of service here: \n${process.env.tos}`)
+                .setURL(`${process.env.TOS}`)
+                .setDescription(`You can find our terms of service here: \n${process.env.TOS}`)
                 .setColor(theme.theme)
         
                 await interaction.reply({ embeds: [embedTOS] });
@@ -144,7 +144,7 @@ module.exports = {
             case "review-topgg":
                 const embed = new EmbedBuilder()
                 .setTitle("Review this Bot!")
-                .setURL(`${process.env.topgg}#reviews`)
+                .setURL(`https://top.gg/bot/${client.user.id}#reviews`)
                 .setColor(theme.theme)
                 .setDescription("Thank you for choosing this bot!")
                 .setFooter({ text: "Thanks :)"})
@@ -154,7 +154,7 @@ module.exports = {
                 .addComponents(
                     new ButtonBuilder()
                     .setLabel("Review")
-                    .setURL(`${process.env.topgg}#reviews`)
+                    .setURL(`https://top.gg/bot/${client.user.id}#reviews`)
                     .setStyle(ButtonStyle.Link)
                 )
         

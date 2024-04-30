@@ -35,7 +35,7 @@ const models = [
   
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName("imagine")
+    .setName("imagine-generate")
     .setDescription("Generate an image using openai")
     .addStringOption(o => o.setName("prompt").setDescription("What do you want to generate?").setRequired(true))
     .addStringOption(o => o.setName("model").setDescription("the model you want to choose").setRequired(true).setChoices(

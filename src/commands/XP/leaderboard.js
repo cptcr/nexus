@@ -50,7 +50,7 @@ module.exports = {
 
             const button = new ButtonBuilder({
                 label: "View in Web",
-                url: `http://85.215.62.5:3001/${interaction.guild.id}/leaderboard`,
+                url: `${process.env.DOMAIN}:${process.env.PORT}/${interaction.guild.id}/leaderboard`,
                 style: ButtonStyle.Link
             })
             

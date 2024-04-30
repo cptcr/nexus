@@ -3,10 +3,12 @@ const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 const log_actions = require("../../Schemas.js/logactions");
 const token = require("../../../encrypt").token(5);
+const perm = require("../../../functions").perm;
 
 module.exports = async (client) => {
     //Invite Create
     client.on(Events.InviteCreate, async (invite) => {
+        perm(invite);
       
         const data = await Audit_Log.findOne({
             Guild: invite.guild.id,

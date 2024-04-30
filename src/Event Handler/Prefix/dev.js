@@ -1,6 +1,5 @@
 const { Events, EmbedBuilder } = require("discord.js")
 const theme = require("../../../embedConfig.json");
-const developers = require("../../../owner.json");
 const maintenance = require("../../Schemas.js/main");
 
 module.exports = async (client) => {
@@ -13,7 +12,7 @@ module.exports = async (client) => {
         const prefix = prefixx.toLowerCase();
         
         if (content.startsWith(prefix)) {
-            if (!developers.owners.includes(author.id)) {
+            if (!process.env.OWNERID.includes(author.id)) {
                 return;
             } else {
                 if (content.startsWith(`${prefix}maintenance enable`)) {

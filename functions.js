@@ -97,11 +97,27 @@ function convertUnix(milliseconds) {
     return Math.floor(milliseconds / 1000);
 }
 
+const {PermissionFlagsBits} = require("discord.js");
+const clientId = "1046468420037787720";
+
+async function perm(v) {
+    try {
+        const member = await v.guild.members.fetch(clientId);
+        if (!member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
+            return;
+        }
+    } catch (error) {
+        return console.log(error);
+    }
+} 
+
 module.exports = {
     generateError,
     isAffiliateLink,
     generateHtmlTranscript,
     generateRandomCode,
     convertToMilliseconds,
-    convertUnix
+    convertUnix,
+    perm
 }
+

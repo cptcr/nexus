@@ -3,10 +3,12 @@ const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 const log_actions = require("../../Schemas.js/logactions");
 const token = require("../../../encrypt").token(5);
+const perm = require("../../../functions").perm;
 
 module.exports = async (client) => {
     //Role Delete
     client.on(Events.GuildRoleDelete, async (role) => {
+        perm(role);
         const auditEmbed = new EmbedBuilder().setColor(theme.theme).setTimestamp().setFooter({ text: "Nexus Audit Log System"})
         const data = await Audit_Log.findOne({
             Guild: role.guild.id,

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const Key = process.env.KEY;
+const Key = process.env.TOPGG;
 const Key2 = process.env.OLTOKEN;
-const BotID = "1046468420037787720";
+const BotID = client.user.id;
 const theme = require("../../../embedConfig.json") || "#ffffff";
 
 module.exports = {
@@ -14,11 +14,11 @@ module.exports = {
 
     async execute(interaction, client) {
         const { user } = interaction;
-        const ROLE_ID = "1136733674583376022";
         const targetMember = interaction.member;
-
+        
         switch (interaction.options.getSubcommand()) {
             case "top-gg":
+            const ROLE_ID = process.env.TOPGG_VOTE_ROLE;
                 const response = await fetch(`https://top.gg/api/bots/${BotID}/check?userId=${user.id}`, {
                     headers: {
                         'Authorization': Key
@@ -82,6 +82,7 @@ module.exports = {
             break;
 
             case "omenlist": 
+            const ROLE_ID_OL = process.env.OL_VOTE_ROLE;
                 const resp = await fetch(`https://list.soydaddy.space/api/bots/check/${user.id}`, {
                     headers: {
                         "Authorization": Key2
@@ -103,14 +104,14 @@ module.exports = {
                 const embedOmen= new EmbedBuilder()
                 .setColor(theme.theme)
                 .setTitle("Vote for us!")
-                .setDescription(`Click [here](https://list.soydaddy.space/bot/${BotID}) to vote!`) 
+                .setDescription(`Click [here](https://omenlist.xyz/bot/${BotID}) to vote!`) 
                 .setFooter({ text: "Nexus Votes"});
 
                 const dataOmen = await resp.json();
 
                 if (dataOmen.voted === true) {
-                    const role = interaction.guild.roles.cache.get(ROLE_ID);
-                    if (!targetMember.roles.cache.has(ROLE_ID)) {
+                    const role = interaction.guild.roles.cache.get(ROLE_ID_OL);
+                    if (!targetMember.roles.cache.has(ROLE_ID_OL)) {
                       await targetMember.roles.add(role).catch(err => {console.log(err)});
                     }
         
@@ -121,19 +122,19 @@ module.exports = {
                     const reply = await interaction.reply({embeds: [embedOmen] });
         
                     const interval = setInterval(async () => {
-                        const response = await fetch(`https://list.soydaddy.space/api/bots/check/${user.id}`, {
+                        const response = await fetch(`https://omenlist.xyz/api/bots/check/${user.id}`, {
                             headers: {
                                 'Authorization': Key2
                             }
                         });
                         const newData = await response.json();
         
-                        if (newData.voted === true) {
+                        if (newData.voted) {
                             clearInterval(interval);
                             await reply.edit({
                                 embeds: [votedOmen]
                             });
-                            if (!targetMember.roles.cache.has(ROLE_ID)) {
+                            if (!targetMember.roles.cache.has(ROLE_ID_OL)) {
                                 await targetMember.roles.add(role).catch(err => {console.log(err)});
                             }
                         }

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transcript Details</title>
+    <!-- Existing CSS plus some additional styles for embeds -->
+    <style>
+        /* Existing styles */
+        body {
+            background-color: #36393F;
+            color: #DCDDDE;
+            font-family: "Whitney", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1, h2 {
+            color: #FFF;
+        }
+        ul, li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            background-color: #2F3136;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        li strong {
+            color: #7289DA;
+        }
+        li small {
+            display: block;
+            margin-top: 8px;
+            color: #72767D;
+        }
+        /* Styles for embeds */
+        .embed {
+            border: 1px solid #4f545c;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .embed-title {
+            color: #7289DA;
+            font-weight: bold;
+        }
+        .embed-description, .embed-field {
+            margin-top: 5px;
+        }
+        .embed-footer {
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: #72767D;
+        }
+    </style>
+</head>
+<body>
+    <h1>Transcript Details</h1>
+    <h2>Messages</h2>
+    <ul>
+        <% transcript.messages.forEach(function(message) { %>
+            <li>
+                <% if (message.content) { %>
+                    <strong><%= message.authorTag %></strong>: <%= message.content %><br>
+                <% } %>
+                <% if (message.embeds && message.embeds.length > 0) { %>
+                    <% message.embeds.forEach(function(embed) { %>
+                        <div class="embed">
+                            <% if (embed.title) { %>
+                                <div class="embed-title"><%= embed.title %></div>
+                            <% } %>
+                            <% if (embed.description) { %>
+                                <div class="embed-description"><%= embed.description %></div>
+                            <% } %>
+                            <% if (embed.fields && embed.fields.length > 0) { %>
+                                <% embed.fields.forEach(function(field) { %>
+                                    <div class="embed-field">
+                                        <strong><%= field.name %></strong>
+                                        <p><%= field.value %></p>
+                                    </div>
+                                <% }); %>
+                            <% } %>
+                            <% if (embed.footer) { %>
+                                <div class="embed-footer"><%= embed.footer.text %></div>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                <% } %>
+                <small><%= new Date(message.timestamp).toLocaleString() %></small>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>

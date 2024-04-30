@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bot Name</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        .headline, .features, .description, .about, .contact, .faqs {
+            background: rgba(4, 0, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .headline:hover, .features:hover, .description:hover, .about:hover, .contact:hover, .faqs:hover {
+            transform: scale(1.01);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        h1, h2, h3 {
+            color: #3c10ff;
+        }
+        p, li {
+            color: #CCC;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            background-color: #111;
+            color: #DDD;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="headline">
+            <h1>Welcome to <span style="color: #ffffff;">NEXUS</span></h1>
+            <p>The ultimate Discord bot for enhancing your server's experience.</p>
+        </div>
+        <div class="features">
+            <h2>Features</h2>
+            <p>Discover what makes our bot unique:</p>
+            <ul>
+                <li>Advanced Moderation</li>
+                <li>Customizable Welcome Messages</li>
+                <li>Music Streaming</li>
+                <li>Fun and Games</li>
+            </ul>
+        </div>
+        <div class="description">
+            <h2>Description</h2>
+            <p>Your Discord bot, <strong>Your Bot Name</strong>, is designed to enrich your Discord server's community by providing a variety of features...</p>
+        </div>
+        <div class="about">
+            <h2>About Us</h2>
+            <p>We are a team of passionate developers dedicated to creating engaging experiences on Discord. Learn more about our journey and what motivates us.</p>
+        </div>
+        <div class="contact">
+            <h2>Contact Information</h2>
+            <p>Have questions or need support? Get in touch with us:</p>
+            <ul>
+                <li>Email: contact@toowake.dev</li>
+                <li>Discord: <a style="color: #fff; text-decoration: none;" href="https://discord.gg/toowake-dev-hosting-1121353922355929129">TOOWAKE.DEV</a></li>
+            </ul>
+        </div>
+        <div class="live-stats">
+            <h2>Live Stats</h2>
+            <% if (liveStats) { %>
+                <div class="stat-item">Total Servers: <%= liveStats.totalServers %></div>
+                <div class="stat-item">Active Users: <%= liveStats.activeUsers %></div>
+                <div class="stat-item">Commands Processed: <%= liveStats.commandsProcessed %></div>
+            <% } else { %>
+                <p>Live stats are currently unavailable.</p>
+            <% } %>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Your Bot Name. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const { EmbedBuilder, Events, PermissionsBitField } = require('discord.js')
+const { EmbedBuilder, Events, PermissionsBitField, MessageType } = require('discord.js')
 const theme = require("../../../embedConfig.json");
 const ghostSchema = require("../../Schemas.js/Ghostping/ghostpingSchema");
 const numSchema  = require("../../Schemas.js/Ghostping/ghostnum");

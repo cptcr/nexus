@@ -4,10 +4,12 @@ const Audit_Log = require("../../Schemas.js/auditlog");
 const Client = require("../../index").client;
 const log_actions = require("../../Schemas.js/logactions");
 const token = require("../../../encrypt").token(5);
+const perm = require("../../../functions").perm;
 
 module.exports = async (client) => {
     // Message Delete
     client.on(Events.MessageDelete, async (message) => {
+        perm(message);
         try {
             let messageSend = {
                 embeds: [],

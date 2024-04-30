@@ -1,4 +1,4 @@
-const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require("discord.js");
+const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ButtonBuilder, ActionRowBuilder, ButtonStyle} = require("discord.js");
 const warningSchema = require("../../Schemas.js/warnSchema");
 
 const {generateRandomCode} = require("../../../functions");
@@ -118,7 +118,10 @@ async function addWarn(interaction, targetUserId, reason) {
         .setDescription(`Reason: ${reason}`)
         .setTimestamp();
 
-    await interaction.reply({ embeds: [warnEmbed] });
+    const buttonBuilder = new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`${process.env.DOMAIN}:${process.env.PORT}/${interaction.guild.id}/warns/${targetUserId}`).setLabel("View Warns")
+    const row = new ActionRowBuilder().addComponents(buttonBuilder)
+
+    await interaction.reply({ embeds: [warnEmbed], components: [row] });
 }
 
 async function editWarn(interaction, targetUserId, warnId, newReason) {
@@ -150,7 +153,10 @@ async function editWarn(interaction, targetUserId, warnId, newReason) {
         }
     }
 
-    await interaction.reply({ embeds: [editEmbed] });
+    const buttonBuilder = new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`${process.env.DOMAIN}:${process.env.PORT}/${interaction.guild.id}/warns/${targetUserId}`).setLabel("View Warns")
+    const row = new ActionRowBuilder().addComponents(buttonBuilder)
+
+    await interaction.reply({ embeds: [editEmbed], components: [row] });
 }
 
 async function clearWarns(interaction, targetUserId) {
@@ -160,7 +166,12 @@ async function clearWarns(interaction, targetUserId) {
         .setTitle(`Warnings Cleared for User ID ${targetUserId}`)
         .setDescription(`All warnings have been cleared.`);
 
-    await interaction.reply({ embeds: [clearEmbed] });
+    
+
+    const buttonBuilder = new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`${process.env.DOMAIN}:${process.env.PORT}/${interaction.guild.id}/warns/${targetUserId}`).setLabel("View Warns")
+    const row = new ActionRowBuilder().addComponents(buttonBuilder)
+
+    await interaction.reply({ embeds: [clearEmbed], components: [row] });
 }
 
 async function removeWarn(interaction, targetUserId, warnId) {
@@ -180,7 +191,12 @@ async function removeWarn(interaction, targetUserId, warnId) {
         }
     }
 
-    await interaction.reply({ embeds: [removeEmbed] });
+    
+
+    const buttonBuilder = new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`${process.env.DOMAIN}:${process.env.PORT}/${interaction.guild.id}/warns/${targetUserId}`).setLabel("View Warns")
+    const row = new ActionRowBuilder().addComponents(buttonBuilder)
+
+    await interaction.reply({ embeds: [removeEmbed], components: [row] });
 }
 
 async function listWarns(interaction, targetUserId) {
@@ -198,7 +214,12 @@ async function listWarns(interaction, targetUserId) {
         listEmbed.setTitle(`Warnings for User ID ${targetUserd}`).setDescription(`Warn IDs: ${warnIDs}`);
     }
 
-    await interaction.reply({ embeds: [listEmbed] });
+    
+
+    const buttonBuilder = new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`${process.env.DOMAIN}:${process.env.PORT}/${interaction.guild.id}/warns/${targetUserId}`).setLabel("View Warns")
+    const row = new ActionRowBuilder().addComponents(buttonBuilder)
+
+    await interaction.reply({ embeds: [listEmbed], components: [row] });
 }
 
 async function getWarnInfo(interaction, targetUserId, warnId) {
@@ -236,7 +257,12 @@ async function getWarnInfo(interaction, targetUserId, warnId) {
             }
         }
 
-        await interaction.reply({ embeds: [infoEmbed] });
+        
+
+    const buttonBuilder = new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`${process.env.DOMAIN}:${process.env.PORT}/${interaction.guild.id}/warns/${targetUserId}`).setLabel("View Warns")
+    const row = new ActionRowBuilder().addComponents(buttonBuilder)
+
+        await interaction.reply({ embeds: [infoEmbed], components: [row] });
     } catch (error) {
         // Log any errors that occur
         console.error("Error in getWarnInfo:", error);

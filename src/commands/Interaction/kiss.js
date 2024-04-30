@@ -53,16 +53,14 @@ module.exports = {
         .setTimestamp()
 
         if (!data) {
-            await Schema.create({ User: user.id, Count: 1 });
-
-            embed.addFields({ name: `Kisses of ${user.username}:`, value: `${data.Count}`, inline: true})
-        } else if (data) {
+            const newData = await Schema.create({ User: x.id, Count: 1 });
+            embed.addFields({ name: `Kisses of ${x.username}:`, value: `${newData.Count}`, inline: true})
+        } else {
             data.Count = Number(data.Count) + 1;
             await data.save();
-
-            embed.addFields({ name: `Kisses of ${user.username}:`, value: `${data.Count}`, inline: true})
+            embed.addFields({ name: `Kisses of ${x.username}:`, value: `${data.Count}`, inline: true})
         }
-
-        return await interaction.reply({ embeds: [embed]})
+        
+        return await interaction.reply({ embeds: [embed]});
     }
 }

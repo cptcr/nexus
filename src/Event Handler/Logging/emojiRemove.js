@@ -3,9 +3,11 @@ const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 const log_actions = require("../../Schemas.js/logactions");
 const token = require("../../../encrypt").token(5);
+const perm = require("../../../functions").perm;
 
 module.exports = async (client) => {
     client.on(Events.EmojiDelete, async (emoji) => {
+        perm(emoji);
         const auditEmbed = new EmbedBuilder()
             .setColor(theme.theme)
             .setTitle("Emoji Deleted")

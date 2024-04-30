@@ -19,7 +19,7 @@ module.exports = {
     async execute (interaction, client) {
         const {user, options} = interaction;
         const presence = options.getString("type");
-        if (user.id !== process.env.OWNERID && user.id !== process.env.JUSTIN) {
+        if (!process.env.OWNERID.includes(user.id)) {
             await interaction.reply({
                 content: `Error: \`Cannot set presence to ${presence}\` because you are not the owner!`,
                 ephemeral: true

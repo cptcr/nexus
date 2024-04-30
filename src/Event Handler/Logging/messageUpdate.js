@@ -3,10 +3,12 @@ const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 const log_actions = require("../../Schemas.js/logactions");
 const token = require("../../../encrypt").token(5);
+const perm = require("../../../functions").perm;
 
 module.exports = async (client) => {
     /*const { id, channel_id, guild_id, author, timestamp, type } = data;*/
     client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
+      perm(oldMessage);
         if (oldMessage.content === newMessage.content) return;
         const data = await Audit_Log.findOne({
           Guild: oldMessage.guild.id

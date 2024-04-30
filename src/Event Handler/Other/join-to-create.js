@@ -15,7 +15,7 @@ module.exports = async (client) => {
           return;
       }
     
-      if (newState.member.id === process.env.BOT) return;
+      if (newState.member.id === process.env.ID) return;
     
       const joindata = await joinschema.findOne({ Guild: newState.member.guild.id });
       const joinchanneldata1 = await joinchannelschema.findOne({ Guild: newState.member.guild.id, User: newState.member.id });
@@ -126,7 +126,7 @@ module.exports = async (client) => {
           return;
       }
     
-      if (oldState.member.id === process.env.BOT) return;
+      if (oldState.member.id === process.env.ID) return;
     
       const leavechanneldata = await joinchannelschema.findOne({ Guild: oldState.member.guild.id, User: oldState.member.id });
     

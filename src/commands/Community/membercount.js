@@ -9,7 +9,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
         .setColor(theme.theme)
-        .setTitle("membercount")
+        .setTitle("Membercount")
         .addFields({ name: "Members:", value: `${interaction.guild.memberCount}`})
         return await interaction.reply({embeds: [embed]})
     }

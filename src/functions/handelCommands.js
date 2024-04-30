@@ -1,8 +1,7 @@
 const fs = require("fs");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require('discord-api-types/v9');
-const clientId = '1046468420037787720'; 
-const guildId = 'YOUR GUILD ID'; 
+const { SlashCommandBuilder } = require("discord.js");
 var countCmd = 0;
 
 var count = 0;
@@ -17,7 +16,12 @@ module.exports = (client) => {
                 countCmd++
                 const command = require(`../commands/${folder}/${file}`);
                 client.commands.set(command.data.name, command);
-                client.commandArray.push(command.data.toJSON());
+
+                if (command.data instanceof SlashCommandBuilder) {
+                    client.commandArray.push(command.data.toJSON());
+                } else {
+                    client.commandArray.push(command.data);
+                }
 
                 count++;
             }
@@ -28,14 +32,14 @@ module.exports = (client) => {
 
         const rest = new REST({
             version: '9'
-        }).setToken(process.env.token);
+        }).setToken(process.env.TOKEN);
 
         (async () => {
             try {
                 console.log(`Started refreshing ${count} application (/) commands.`);
 
                 await rest.put(
-                    Routes.applicationCommands(clientId), {
+                    Routes.applicationCommands(process.env.ID), {
                         body: client.commandArray
                     },
                 );

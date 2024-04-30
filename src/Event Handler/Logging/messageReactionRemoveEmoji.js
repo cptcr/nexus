@@ -3,10 +3,12 @@ const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 const log_actions = require("../../Schemas.js/logactions");
 const token = require("../../../encrypt").token(5);
+const perm = require("../../../functions").perm;
 
 module.exports = async (client) => {
     //Remove all reactions from a message
     client.on(Events.MessageReactionRemoveEmoji, async (reaction) => {
+      perm(reaction);
         const {message} = reaction;
         const {author, id, guild, channel } = message
       

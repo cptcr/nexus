@@ -3,11 +3,13 @@ const theme = require("../../../embedConfig.json");
 const Audit_Log = require("../../Schemas.js/auditlog");
 const log_actions = require("../../Schemas.js/logactions");
 const token = require("../../../encrypt").token(5);
+const perm = require("../../../functions").perm;
 
 module.exports = async (client) => {
   
     //Guild Update
     client.on(Events.GuildUpdate, async (oldGuild, newGuild) => {
+      perm(oldGuild);
         //Old Stuff
         const oldName = oldGuild.name;
         const oldDesc = oldGuild.description;

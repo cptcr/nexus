@@ -1,7 +1,6 @@
 const { Interaction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, DataManager, PermissionsBitField, Embed } = require("discord.js");
 //blacklist user
 const blacklist = require('../Schemas.js/Blacklist/blacklist');
-const owner = require("../../owner.json").owners;
 const mainSchema = require("../Schemas.js/main");
 const dataMain = mainSchema.findOne({Type: "Main" });
  
@@ -27,7 +26,7 @@ module.exports = {
         }, 1000)
 
         if (maintenance) {
-          if (!owner.includes(interaction.user.id)) {
+          if (!process.env.OWNERID.includes(interaction.user.id)) {
             await interaction.reply({
               content: `${client.user.username} is currently under maintenance!`,
               ephemeral: true
