@@ -1,4 +1,3 @@
 node_modules/
-express/
 package-lock.json
 .env
