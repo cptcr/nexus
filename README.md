@@ -17,7 +17,7 @@ Welcome to NEXUS, a project hosted by Toowake Development.
 Before you begin, ensure the following:
 
 - A Discord bot ready. Create one at the [Discord Developer Portal](https://discord.com/developers).
-- Your bot listed on [top.gg](https://top.gg) and [Omen List](https://list.soydaddy.space).
+- Your bot listed on [top.gg](https://top.gg) and [Omen List](https://omenlist.xyz).
 - `.env` file filled out. Tutorial: [.env Tutorial](https://sites.google.com/view/nexusenv/).
 - Read the discord.js [Documentation](https://discord.js.org/docs).
 - Read the discord.js [Guide](https://discordjs.guide/)
