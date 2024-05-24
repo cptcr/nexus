@@ -21,10 +21,11 @@ module.exports = async (client) => {
             const auditChannel = client.channels.cache.get(logID);
             auditEmbed.setTitle("Voice Channel Left")
             .addFields(
-                {name: "Channel:", value: `${oldState.channel}`, inline: false},
+                {name: "Channel:", value: `${newState.channel}`, inline: false},
                 {name: "Member:", value: `${oldState.member}`, inline: false},
                 {name: "Member ID:", value: `${oldState.member.id}`}
             )
+            .setThumbnail(`${oldState.member.displayAvatarURL()}`)
             await auditChannel.send({ embeds: [auditEmbed]}).catch((err) => {return;});
         }
     })

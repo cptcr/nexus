@@ -30,6 +30,7 @@ module.exports = {
         
 
         const user = interaction.options.getUser("user") || interaction.user;
+        const x = user;
         
 
         if (interaction.user.id === user.id) {

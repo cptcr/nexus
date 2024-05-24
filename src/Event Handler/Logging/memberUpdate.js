@@ -1,42 +1,61 @@
-const { EmbedBuilder, Events, AuditLogEvent } = require('discord.js');
-const theme = require("../../../embedConfig.json");
-const Audit_Log = require("../../Schemas.js/auditlog");
-const log_actions = require("../../Schemas.js/logactions");
-const token = require("../../../encrypt").token(5);
-const perm = require("../../../functions").perm;
+const { EmbedBuilder, Events } = require('discord.js');
+const theme = require('../../../embedConfig.json');
+const Audit_Log = require('../../Schemas.js/auditlog');
+const { perm } = require('../../../functions');
 
 module.exports = async (client) => {
     client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
-        perm(oldMember);
-        const auditEmbed = new EmbedBuilder()
-            .setColor(theme.theme)
-            .setTimestamp()
-            .setFooter({ text: "Nexus Audit Log System" });
+        console.log("GuildMemberUpdate event triggered");  
 
-        const data = await Audit_Log.findOne({ Guild: oldMember.guild.id });
-        let logID = data ? data.Member : null;
-        if (!logID) return;
+        // if (!perm(oldMember)) {
+        //     console.log("Permission check failed");  
+        //     return;
+        // }
 
-        const auditChannel = client.channels.cache.get(logID);
-        const changes = [];
+        // const auditEmbed = new EmbedBuilder()
+        //     .setColor(theme.theme)
+        //     .setTimestamp()
+        //     .setFooter({ text: 'Nexus Audit Log System' });
 
-        if (oldMember.nickname !== newMember.nickname) {
-            changes.push(`Nickname: \`${oldMember.nickname || 'None'}\` → \`${newMember.nickname || 'None'}\``);
-        }
+        // const data = await Audit_Log.findOne({ Guild: oldMember.guild.id }).catch(err => {
+        //     console.error("Error fetching Audit_Log:", err);
+        //     return null;
+        // });
 
-        if (!oldMember.roles.cache.equals(newMember.roles.cache)) {
-            const oldRoles = oldMember.roles.cache.map(r => r).join(", ");
-            const newRoles = newMember.roles.cache.map(r => r).join(", ");
-            changes.push(`Roles: \`${oldRoles}\` → \`${newRoles}\``);
-        }
+        // if (!data || !data.Channel) {
+        //     console.log("No channel data found or no channel set");  
+        //     return;
+        // }
 
-        if (changes.length === 0) return;
-        const changesText = changes.join('\n');
+        // const auditChannel = client.channels.cache.get(data.Channel);
+        // if (!auditChannel) {
+        //     console.log("Audit channel not found"); 
+        //     return;
+        // }
 
-        auditEmbed
-            .setTitle("Member Updated")
-            .addFields({ name: "Changes:", value: changesText });
+        // const changes = [];
 
-        await auditChannel.send({ embeds: [auditEmbed] }).catch((err) => {});
+        // if (oldMember.nickname !== newMember.nickname) {
+        //     changes.push(`Nickname: \`${oldMember.nickname || 'None'}\` → \`${newMember.nickname || 'None'}\``);
+        // }
+
+        // if (!oldMember.roles.cache.equals(newMember.roles.cache)) {
+        //     const oldRoles = oldMember.roles.cache.map(role => role.name).join(', ');
+        //     const newRoles = newMember.roles.cache.map(role => role.name).join(', ');
+        //     changes.push(`Roles: \`${oldRoles}\` → \`${newRoles}\``);
+        // }
+
+        // if (changes.length === 0) {
+        //     console.log("No changes detected");  
+        //     return;
+        // }
+
+        // auditEmbed
+        //     .setTitle('Member Updated')
+        //     .addFields({ name: 'Changes:', value: changes.join('\n') });
+
+        // await auditChannel.send({ embeds: [auditEmbed] }).catch(err => {
+        //     console.error('Failed to send audit log message:', err);
+        // });
     });
 };

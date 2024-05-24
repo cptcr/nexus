@@ -3,19 +3,35 @@ const fs = require('fs');
 const process = require("node:process");
 require('dotenv').config();
 var botStatus = false;
-const functionsExt = require("../functions")
+const functionsExt = require("../functions");
+
+const path = require("path");
+
 const client = new Client({ 
   intents: [
+    //Guild
         GatewayIntentBits.Guilds, 
         GatewayIntentBits.GuildMessages, 
-        GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildInvites,
         GatewayIntentBits.GuildModeration,
+        GatewayIntentBits.GuildMessagePolls,
+        GatewayIntentBits.GuildScheduledEvents,
+        GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildIntegrations,
+    //Direct
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.DirectMessageReactions,
         GatewayIntentBits.DirectMessageTyping,
+    //Message
+        GatewayIntentBits.MessageContent,
+    //Automod
+        GatewayIntentBits.AutoModerationConfiguration,
+        GatewayIntentBits.AutoModerationExecution,
+
+        
   ],
   partials: [
       Partials.Channel, 
@@ -78,8 +94,43 @@ fs.readdirSync('./src/Event Handler').forEach((dir) => {
       getEventsStatus = true
   }); 
 });
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  let componentType;
+
+  try {
+    if (interaction.isButton()) {
+      componentType = 'Buttons';
+    } else {
+      if (interaction.customId.startsWith('channel')) {
+        componentType = 'ChannelSelect';
+      } else if (interaction.customId.startsWith('role')) {
+        componentType = 'RoleSelect';
+      } else if (interaction.customId.startsWith('string')) {
+        componentType = 'StringSelect';
+      } else if (interaction.customId.startsWith('user')) {
+        componentType = 'UserSelect';
+      }
+    }
+
+  } catch (error) {
+    return;
+  }
+
+  if (componentType) {
+    try {
+      const filePath = path.join(__dirname, 'Component_Handler', componentType, `${interaction.customId}.js`);
+      const componentModule = require(filePath);
+
+      if (!componentModule || !filePath ) { return; } else { await componentModule.run(interaction); }
+    } catch (error) {
+      console.log(`[COMPONENT HANDLER] ERROR \n${error.stack()}`)
+    }
+  }
+});
+
 var cpCount = 0
-var cpStatus = false
+var cpStatus = false;
 
 client.on("messageCreate", async (message) => {
   const prefix = "!";
@@ -129,23 +180,23 @@ const { textColored } = require('../lib/function');
 
 let answer = {
     mongoose : {
-        message: (mongooseStatus) ? "MongoDB not connected." : "✓ MongoDB Connected.",
+        message: (mongooseStatus) ? "MongoDB not connected." : "✓ [Database] MongoDB Connected.",
         color: (mongooseStatus) ? "#ff0000" : false
     },
     bot : {
-        message: (botStatus) ? "Discord Bot not connected." : `✓ Discord Bot Connected to ${client.user.username}.`,
+        message: (botStatus) ? "Discord Bot not connected." : `✓ [Client] Discord Bot Connected to ${client.user.username}.`,
         color: (botStatus) ? "#ff0000" : false
     },
     commands : {
-        message: (botStatus) ? "0 Commands loaded." : `✓ Loadded ${getCount} Commands.`,
+        message: (botStatus) ? "0 Commands loaded." : `✓ [Client] Loaded ${getCount} Commands.`,
         color: (botStatus) ? "#ff0000" : false
     },
     pCommands : {
-      message: (botStatus) ? "0 Prefix Commands loaded." : `✓ Loadded ${cpCount} Prefix Commands.`,
+      message: (botStatus) ? "0 Prefix Commands loaded." : `✓ [Client] Loaded ${cpCount} Prefix Commands.`,
       color: (botStatus) ? "#ff0000" : false
     },
     events : {
-        message: (botStatus) ? "0 Events loaded." : `✓ Loadded ${eCount} Events.`,
+        message: (botStatus) ? "0 Events loaded." : `✓ [Client] Loaded ${eCount} Events.`,
         color: (botStatus) ? "#ff0000" : false
     }
 }
@@ -159,53 +210,10 @@ console.log("⋆★⋆", textColored(answer.events.message, answer.events.color)
 console.log(textColored("════════════════ ⋆Systems⋆ ════════════════", '#800080'))
 })
 
-client.on('messageCreate', async message => {
-  if (message.content.startsWith("!postRules")) {
-    const rulesEmbed = new EmbedBuilder()
-        .setTitle("Rules")
-        .setDescription("Please read our rules!")
-        .setColor("Blurple")
-        .addFields(
-        {name: "Rule 1 [Respect]", value: "Treat all members with respect. Harassment, hate speech, or discriminatory behavior will result in severe penalties.", inline: false},
-        {name: "Rule 2 [Profile Content]", value: "Keep your profile clean from offensive, inappropriate, or explicit content, including usernames, avatars, and statuses.", inline: false},
-        {name: "Rule 3 [Impersonation]", value: "Impersonation of members, staff, or any individual is strictly prohibited and can result in immediate bans.", inline: false},
-    
-        // Communication
-        {name: "Rule 4 [Spamming]", value: "Avoid spamming in any form. This includes excessive messaging, emote use, or command misuse.", inline: false},
-        {name: "Rule 5 [Links and Media]", value: "Do not share harmful links, unauthorized invites, or inappropriate media. This will be met with strict action.", inline: false},
-        {name: "Rule 6 [Sensitive Content]", value: "Sensitive discussions should be limited to designated areas and handled respectfully to avoid disputes.", inline: false},
-    
-        // Advertising and Self-Promotion
-        {name: "Rule 7 [Self Advertising]", value: "Unauthorized advertising or self-promotion is forbidden. This includes direct messaging members without consent.", inline: false},
-    
-        // Server Participation
-        {name: "Rule 8 [Joining this Server]", value: "Joining and participating in this server means you agree to follow all rules. Non-compliance may lead to penalties.", inline: false},
-        {name: "Rule 9 [Staff Pings]", value: "Only ping staff for valid reasons. Misuse of this feature is not tolerated and may result in disciplinary action.", inline: false},
-        {name: "Rule 10 [Mini-Modding]", value: "Do not act as a moderator. Report rule violations to the staff using the proper channels.", inline: false},
-    
-        // Hosting and Server Use
-        {name: "Rule 11 [Hosting Software]", value: "Use our hosting software responsibly. Any misuse, such as deploying malicious code, will lead to immediate suspension.", inline: false},
-        {name: "Rule 12 [Using Our Servers]", value: "The servers provided should be used as intended. Any form of abuse or unauthorized use will result in service revocation.", inline: false},
-        
-        // Information Security
-        {name: "Rule 13 [Code Sharing]", value: "Do not share dangerous or copyrighted code. Always respect intellectual property rights and ensure software safety.", inline: false},
-        {name: "Rule 14 [Sharing Sensitive Information]", value: "Keep personal and sensitive information secure. Do not share such information without explicit consent.", inline: false},
-    
-        // Support and Requests
-        {name: "Rule 15 [Support Tickets]", value: "Open support tickets only for valid issues. Non-essential tickets waste resources and may lead to restrictions.", inline: false},
-        {name: "Rule 16 [Tickets and Bot Requests]", value: "For bot purchases, open a BOT REQUEST TICKET. Ensure you have a legitimate need before opening any ticket.", inline: false},
-    
-        // Compliance and Enforcement
-        {name: "Rule 17 [Moderation Actions]", value: "Violations of these rules may result in warnings, mutes, kicks, or bans depending on the severity of the offense.", inline: false},
-        {name: "Rule 18 [Acceptance of Terms]", value: "By using NEXUS services and this server, you accept our [Terms of Service](https://tos.toowake.repl.co) and [Privacy Policy](https://privacy-policy.toowake.repl.co).", inline: false}
-        )
-        .setImage("https://us-east-1.tixte.net/uploads/toowake.bot.style/DALL%C2%B7E_2024-04-23_03.01.54_-_A_graphic_image_with_a_very_large_white_text_'RULES'_centered_on_a_black_background._The_text_shoul.webp");
-    await message.channel.send({ embeds: [rulesEmbed] });
-  }
-});
 
 
 const { Poru } = require("poru");
+const { colors } = require('prompt');
 
 const nodes = [
     {

@@ -8,14 +8,17 @@ const perm = require("../../../functions").perm;
 module.exports = async (client) => {
         client.on(Events.GuildBanRemove, async (ban) => {
             perm(ban.id);
+
+            try {
+                const fetchedLogs = await ban.guild.fetchAuditLogs({
+                    limit: 1,
+                    type: AuditLogEvent.MemberBanAdd,
+                });
+                const banLog = fetchedLogs.entries.first();
+            } catch (error) {
+                return;
+            }
     
-            const fetchedLogs = await ban.guild.fetchAuditLogs({
-                limit: 1,
-                type: AuditLogEvent.MemberBanAdd,
-            });
-            const banLog = fetchedLogs.entries.first();
-    
-            // Determine the moderator, fallback to 'Unknown' if not found
             const moderator = banLog ? banLog.executor.tag : 'Unknown';
     
             const auditEmbed = new EmbedBuilder()

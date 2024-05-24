@@ -32,7 +32,7 @@ module.exports = async (client) => {
             const auditEmbed = new EmbedBuilder()
             .setColor(theme.theme)
             .setTimestamp()
-            .setFooter({ text: `${Client.user.username} Audit Log System` });
+            .setFooter({ text: `Nexus Audit Log System` });
 
             message.embeds.forEach(embed => {
                 messageSend.embeds.push(embed)

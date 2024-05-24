@@ -32,12 +32,13 @@
     "cpu-stat": "^2.0.1",
     "crypto": "^1.0.1",
     "dayjs": "^1.11.10",
+    "dialogflow-v2": "^2.2.0",
     "discord-arts": "^0.4.5",
     "discord-cloner": "^1.1.5",
     "discord-gamecord": "^4.4.1",
     "discord-giveaways": "^6.0.1",
     "discord-html-transcripts": "^3.2.0",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.15.2",
     "distube": "^4.1.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
@@ -60,7 +61,7 @@
     "node-process": "^1.0.1",
     "nsfw-ts": "^1.0.6",
     "open": "^9.1.0",
-    "openai": "^4.26.1",
+    "openai": "^4.43.0",
     "os": "^0.1.2",
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
@@ -70,7 +71,7 @@
     "promise-mysql": "^5.2.0",
     "prompt": "^1.3.0",
     "pterodactyl.js": "^2.1.1",
-    "puppeteer": "^21.5.2",
+    "puppeteer": "^21.11.0",
     "quickchart-js": "^3.1.3",
     "re": "^0.1.4",
     "replicate": "^0.25.2",
@@ -78,6 +79,7 @@
     "rss-parser": "^3.13.0",
     "superagent": "^8.1.2",
     "systeminformation": "^5.21.17",
+    "textcortex-typescript": "^1.0.0",
     "undici": "^6.15.0",
     "util": "^0.12.5",
     "wikijs": "^6.4.1",
@@ -128,5 +130,8 @@
     "superagent",
     "wikijs",
     "youtube-notification"
-  ]
+  ],
+  "directories": {
+    "lib": "lib"
+  }
 }

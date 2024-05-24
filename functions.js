@@ -97,21 +97,27 @@ function convertUnix(milliseconds) {
     return Math.floor(milliseconds / 1000);
 }
 
-const {PermissionFlagsBits} = require("discord.js");
+const { PermissionFlagsBits } = require("discord.js");
 const { client } = require("./src");
-const clientId = "1046468420037787720";
 
 async function perm(v) {
     try {
-        const guild = await client.guilds.fetch(v)
-        const member = await guild.members.fetch(clientId);
-        if (!member.permissions.has(PermissionFlagsBits.ViewAuditLog)) {
-            return;
+        // Ensure client is ready before accessing guilds
+        await client.ready;
+        
+        const guild = await client.guilds.fetch(v);
+        const member = await guild.members.fetch(client.user);
+
+        if (!member.permissions.has(PermissionFlagsBits.VIEW_AUDIT_LOG)) {
+            return false; // Return false if permission is not granted
         }
+
+        return true; // Return true if permission is granted
     } catch (error) {
-        return console.log(error);
+        return false; // Return false in case of error
     }
-} 
+}
+
 
 module.exports = {
     generateError,

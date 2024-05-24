@@ -26,6 +26,7 @@ module.exports = async (client) => {
                 {name: "Member:", value: `${oldState.member}`, inline: false},
                 {name: "Member ID:", value: `${oldState.member.id}`}
             )
+            .setThumbnail(`${oldState.member.displayAvatarURL()}`)
             await auditChannel.send({ embeds: [auditEmbed]}).catch((err) => {return;});
         }
     })
