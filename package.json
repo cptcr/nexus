@@ -22,7 +22,7 @@
     "@discordjs/voice": "^0.16.1",
     "@iamtraction/google-translate": "^2.0.1",
     "akaneko": "^5.2.8",
-    "axios": "^1.7.1",
+    "axios": "^1.7.2",
     "canvacord": "^5.4.10",
     "cfonts": "^3.2.0",
     "chalk": "^4.1.0",
@@ -80,7 +80,7 @@
     "superagent": "^8.1.2",
     "systeminformation": "^5.21.17",
     "textcortex-typescript": "^1.0.0",
-    "undici": "^6.16.1",
+    "undici": "^6.17.0",
     "util": "^0.12.5",
     "wikijs": "^6.4.1",
     "youtube-notification": "^1.1.0"
