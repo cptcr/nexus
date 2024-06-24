@@ -35,7 +35,17 @@ module.exports = {
             await command.execute(interaction, client)
           }
         } else {
-          await command.execute(interaction, client);
+
+          if (command.devOnly && process.env.OWNERID.includes(interaction.user.id)) {
+            await command.execute(interaction, client);
+          } else if (command.devOnly && !process.env.OWNERID.includes(interaction.user.id)) {
+            await interaction.reply({
+              content: "This command is a developer only command!",
+              ephemeral: true
+            })
+          } else {
+            await command.execute(interaction, client);
+          }
         }
       } catch (error) {
         console.log(error);  
