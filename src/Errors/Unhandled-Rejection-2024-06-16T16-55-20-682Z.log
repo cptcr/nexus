@@ -1,0 +1,6 @@
+Unhandled-Rejection: Error [InteractionNotReplied]: The reply to this interaction has not been sent or deferred.
+Error [InteractionNotReplied]: The reply to this interaction has not been sent or deferred.
+    at ChatInputCommandInteraction.editReply (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\structures\interfaces\InteractionResponses.js:160:48)
+    at Object.execute (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\commands\User_Installed\imagine.user.installed.js:100:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\events\interactionCreate.js:47:13)

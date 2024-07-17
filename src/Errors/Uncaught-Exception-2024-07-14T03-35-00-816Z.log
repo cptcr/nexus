@@ -1,0 +1,9 @@
+Uncaught-Exception: DiscordAPIError[50013]: Missing Permissions
+DiscordAPIError[50013]: Missing Permissions
+    at handleErrors (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\rest\dist\index.js:730:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async SequentialHandler.runRequest (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\rest\dist\index.js:1133:23)
+    at async SequentialHandler.queueRequest (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\rest\dist\index.js:963:14)
+    at async _REST.request (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\rest\dist\index.js:1278:22)
+    at async Guild.fetchAuditLogs (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\structures\Guild.js:771:18)
+    at async Client.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\Event Handler\Logging\timeoutAdd.js:15:33)

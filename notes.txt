@@ -1,0 +1,65 @@
+Features Add:
+- Scam detection (Validating http instead of https, known scam methods)
+  Planned to add a system which automatically searches in the message content for scam links or text. 
+  After that the bot should send a message to the log and moderators should have the option to kick, ban or timeout the user.
+
+- AI Moderation (Moderators need to confirm)
+  Using Blackbox AI to analyze the users message behavior.
+  After that the bot should send a message to the log and moderators should have the option to kick, ban or timeout the user.
+
+- Message Customs (XP, Ticket etc.)
+  Customizing the message with syntaxes (replace $user with the user ping for example)
+
+- Mutli Languages (First: English, German and Dutch)
+  This should be a system where users can choose the own language the bot should reply with and the server owner can choose a own language which is 
+  standard for the discord server. Users should still have the option to get responses with their own choosen language.
+
+- Logging all interactions
+  This feature should log all interactions in a .txt file in a folder. the filename should be discordUsername-discordUserId.txt, users must have the opt-out to get this data stored
+  and should have the option to delete, clear or download their data
+
+- Downloading User/Server data
+  Users: 
+   - can view their stored data from all schemas in mongodb
+   - can download it in a ZIP file
+  
+  Server Owners:
+   - can view the stored data of all users within a server. This does not include data which are user specific/doesnt contain the GuildID in the schemas
+
+- Moderation Web Pages
+  This should display all moderation actions taken within a server on a web page (domain.com/serverId/mod-logs/storedId)
+
+  Display:
+  - Moderator(s)
+  - Reason
+  - Creaton and Expiration Date
+  - Avatars
+
+- Event Sheduler and Reminder
+  - Users can schedule events, meetings, or gaming sessions directly through the bot.
+  - Automatically send reminders to participants as the event approaches.
+  - Integrate with external calendars (Google Calendar, iCal) if possible.
+
+- Customizable Welcome Messages
+  - Send personalized welcome messages to new members.
+  - Include server rules, FAQs, and custom fields like interests for better community engagement.
+  - Offer interactive tutorials or server tours for new members.
+
+- Game Integration and Score Tracking (with opt-out)
+  - Integrate simple games like trivia, hangman, or custom quizzes.
+  - Track scores and provide leaderboards for competitive games within the server.
+  - Allow users to challenge each other and record match outcomes.
+
+- Custom Commands and Macros
+  - Allow users to create their own custom commands for repetitive tasks.
+  - Enable macros for complex command sequences that can be triggered with a single command.
+  - Provide a GUI for creating and managing these commands if possible.
+
+- API Integration for Real-Time Updates:
+  - Integrate APIs for weather, news, or sports updates.
+  - Provide real-time notifications or feeds based on user-defined interests or locations.
+  - Allow customization of the type and frequency of updates.
+
+Features Fix:
+- Ticket System
+- Modmail System

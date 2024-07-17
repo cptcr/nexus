@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Laptop",
+    "price": 1000,
+    "_id": "da531b54-ea26-475a-8f10-7fe721e0cf46"
+  },
+  {
+    "name": "Phone",
+    "price": 500,
+    "_id": "f8b7b126-acf1-46b0-852b-d9c9517a2d9e"
+  }
+]

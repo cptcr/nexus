@@ -4,6 +4,7 @@ const process = require("node:process");
 require('dotenv').config();
 var botStatus = false;
 const functionsExt = require("../functions");
+const enc = require("../encrypt").token;
 
 const path = require("path");
 
@@ -36,7 +37,9 @@ const client = new Client({
   partials: [
       Partials.Channel, 
       Partials.Reaction, 
-      Partials.Message
+      Partials.Message,
+      Partials.GuildMember,
+      Partials.GuildScheduledEvent,
   ],
   allowedMentions: {
   parse: [`users`, `roles`],
@@ -54,24 +57,54 @@ const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js")); 
 const commandFolders = fs.readdirSync("./src/commands");
 
-//Anti Crash System
+// Anti Crash System
+function logErrorToFile(error, errorType) {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const errorFileName = `${errorType}-${timestamp}.log`;
+  const errorFilePath = path.join(__dirname, 'Errors', errorFileName);
 
+  // Ensure the 'Errors' directory exists, create it if it does not
+  fs.mkdir(path.join(__dirname, 'Errors'), { recursive: true }, (dirErr) => {
+      if (dirErr) {
+          console.error("Failed to create directory:", dirErr);
+          return;
+      }
+
+      // Define the error message, including the stack trace if available
+      const errorMessage = `${errorType}: ${error.stack ? error + '\n' + error.stack : error}`;
+
+      // Write the error message to the newly created error log file
+      fs.writeFile(errorFilePath, errorMessage, (fileErr) => {
+          if (fileErr) {
+              console.error("Failed to write to file:", fileErr);
+          }
+      });
+  });
+}
+
+// Define process event listeners for handling errors
 process.on('unhandledRejection', (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  // Optionally use functionsExt.generateError if it logs the details as desired
-  functionsExt.generateError("Unhandled Rejection", reason.stack ? reason + '\n' + reason.stack : reason, promise);
+  logErrorToFile(reason, 'Unhandled-Rejection');
+  if (typeof functionsExt !== 'undefined' && functionsExt.generateError) {
+    functionsExt.generateError("Unhandled Rejection", reason.stack ? reason + '\n' + reason.stack : reason, promise);
+  }
 });
 
 process.on('uncaughtException', (err) => {
   console.error("Uncaught Exception:", err);
-  // Optionally use functionsExt.generateError if it logs the details as desired
-  functionsExt.generateError("Uncaught Exception", err.stack ? err + '\n' + err.stack : err);
+  logErrorToFile(err, 'Uncaught-Exception');
+  if (typeof functionsMax !== 'undefined' && functionsMax.generateError) {
+    functionsMax.generateError("Uncaught Exception", err.stack ? err + '\n' + err.stack : err);
+  }
 });
 
 process.on('uncaughtExceptionMonitor', (err, origin) => {
   console.error("Uncaught Exception Monitor:", err, "Origin:", origin);
-  // Optionally use functionsExt.generateError if it logs the details as desired
-  functionsExt.generateError("Uncaught Exception Monitor", err.stack ? err + '\n' + err.stack : err, origin);
+  logErrorToFile(err, 'Uncaught-Exception-Monitor');
+  if (typeof functionsExt !== 'undefined' && functionsExt.generateError) {
+    functionsExt.generateError("Uncaught Exception Monitor", err.stack ? err + '\n' + err.stack : err, origin);
+  }
 });
 
 
@@ -81,6 +114,9 @@ process.on('uncaughtExceptionMonitor', (err, origin) => {
     }
     client.handleEvents(eventFiles, "./src/events");
     client.handleCommands(commandFolders, "./src/commands");
+    client.handleDevCommands(devCommandFolders, "./src/dev");
+    client.handleInstalledCommands(installedCommandFolders, "./src/user-installed-commands")
+    client.handleGuildCommands("./src/custom-commands");
 })();
 client.login(process.env.TOKEN)
 
@@ -102,14 +138,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.isButton()) {
       componentType = 'Buttons';
     } else {
-      if (interaction.customId.startsWith('channel')) {
+      if (interaction.isChannelSelectMenu()) {
         componentType = 'ChannelSelect';
-      } else if (interaction.customId.startsWith('role')) {
+      } else if (interaction.isRoleSelectMenu()) {
         componentType = 'RoleSelect';
-      } else if (interaction.customId.startsWith('string')) {
+      } else if (interaction.isStringSelectMenu()) {
         componentType = 'StringSelect';
-      } else if (interaction.customId.startsWith('user')) {
+      } else if (interaction.isUserSelectMenu()) {
         componentType = 'UserSelect';
+      } else if (interaction.isAnySelectMenu()) {
+        componentType = "SelectMenus"
       }
     }
 
@@ -122,7 +160,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       const filePath = path.join(__dirname, 'Component_Handler', componentType, `${interaction.customId}.js`);
       const componentModule = require(filePath);
 
-      if (!componentModule || !filePath ) { return; } else { await componentModule.run(interaction); }
+      if (!componentModule || !filePath ) { return; } else { await componentModule.run(interaction, client); }
     } catch (error) {
       console.log(`[COMPONENT HANDLER] ERROR \n${error.stack()}`)
     }
@@ -135,22 +173,31 @@ var cpStatus = false;
 client.on("messageCreate", async (message) => {
   const prefix = "!";
 
-  const cmdArray = [];
-  
-  client.handlePrefix = async (commandFolders, path) => {
-    for (const folder of commandFolders) {
-        const commandFiles = fs.readdirSync(`${path}/${folder}`).filter(file => file.endsWith('.js'));
-  
-        for (const file of commandFiles) {
-          cpCount++
-            const command = require(`../prefix/${file}`);
-            client.commands.set(command.data.name, command);
-            client.commandArray.push(command.data.toJSON());
-            cpStatus = true
-        }
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+  console.log("Prefix command used!");
+  const args = message.content.slice(prefix.length).trim().split(/ +/);
+  const commandName = args.shift().toLowerCase(); // Gets the command name and ensures it is in lowercase
+  const commandPath = `./prefix/${commandName}.js`;
+
+  try {
+    // Dynamically importing the command module
+    const command = await import(commandPath).catch(() => {
+      throw new Error('Command not found');
+    });
+
+    // Executing the command if it exists and is a function
+    if (command && typeof command.reply === 'function') {
+      await command.reply(message);
+    } else {
+      throw new Error('Invalid command structure');
     }
+  } catch (error) {
+    console.error(error);
+    message.reply(`An error occurred: ${error.message}`);
   }
-})
+});
+
 
 client.on('messageCreate', async message => {
   if (message.content.startsWith('!banner')) {
@@ -230,5 +277,4 @@ const PoruOptions = {
 };
 
 client.poru = new Poru(client, nodes, PoruOptions);
-
 module.exports = {client, botStatus}

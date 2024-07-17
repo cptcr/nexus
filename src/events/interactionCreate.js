@@ -57,7 +57,7 @@ module.exports = {
             {name: "Error:", value: `${error}`, inline: false}
           ],
           title: "There was an error!"
-        }).setColor("Green").setDescription("https://discord.gg/toowake")
+        }).setColor("Green").setDescription("https://discord.gg/cptcr")
 
         const channel = await client.channels.cache.get("1127250005065994321")
         await interaction.reply({
