@@ -188,19 +188,6 @@ This advanced Discord.js Bot/Client Handler simplifies the development of robust
 - **Autocomplete**: Implement autocomplete functionality in commands.
 - **TypeScript Support**: Full support for both JavaScript and TypeScript, enhancing development flexibility.
 
-## Configuration Details (.env File)
-
-```js
-TOKEN= //Your Discord Bot Token
-ID= //Your Discord Client/Bot ID
-SHARDS= //Number of shards to deploy
-MONGODBURI= //Your MongoDB URL
-PORT= //Port for the Express server (default provided if left empty)
-DEVELOPERS= ["USERID"] //Array of developer Discord user IDs
-DEVCHANNEL= //Channel ID for sending logs
-DEVGUILDID= "1254387341100060684" //Guild ID for deploying developer-only commands
-```
-
 ## Setup Instructions
 
 1. **Clone the Repository**: Begin by cloning the repository to your local machine or server.
