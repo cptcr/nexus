@@ -56,6 +56,8 @@ client.commands = new Collection();
 const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js")); 
 const commandFolders = fs.readdirSync("./src/commands");
+const devCommandFolders = fs.readdirSync("./src/dev");
+
 
 // Anti Crash System
 function logErrorToFile(error, errorType) {
