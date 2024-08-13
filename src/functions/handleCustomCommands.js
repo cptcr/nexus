@@ -1,6 +1,7 @@
 const { REST } = require("@discordjs/rest");
 const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
+const chalk = require('chalk');
 
 module.exports = (client) => {
     /**
@@ -26,11 +27,12 @@ module.exports = (client) => {
                 const command = require(`../custom-commands/${guildId}/${file}`);
                 client.commands.set(command.data.name, command);
                 commandArray.push(command.data.toJSON());
+                console.log(chalk.green(`[ CMD ] Loaded command: ${command.data.name} for guild: ${guildId}`));
             }
 
             // Register the commands to the specific guild.
             try {
-                console.log(`[ CLIENT ] Started refreshing application (/) commands for guild: ${guildId}`);
+                console.log(chalk.yellow(`[ CMD ] Started refreshing application (/) commands for guild: ${guildId}`));
 
                 await rest.put(
                     Routes.applicationGuildCommands(process.env.ID, guildId), {
@@ -38,9 +40,9 @@ module.exports = (client) => {
                     },
                 );
 
-                console.log(`[ CLIENT ] Successfully reloaded application (/) commands for guild: ${guildId}`);
+                console.log(chalk.cyan(`[ CMD ] Successfully reloaded application (/) commands for guild: ${guildId}`));
             } catch (error) {
-                console.error(`Error loading commands for guild ${guildId}:`, error);
+                console.error(chalk.red(`[ CMD ] Error loading commands for guild ${guildId}:`, error));
             }
         }
     };

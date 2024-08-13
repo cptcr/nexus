@@ -1,0 +1,16 @@
+Uncaught-Exception: SyntaxError: Missing initializer in const declaration
+C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\Event Handler\Logging\roleMemberAdd.js:16
+        const channel 
+              ^^^^^^^
+
+SyntaxError: Missing initializer in const declaration
+    at wrapSafe (node:internal/modules/cjs/loader:1383:18)
+    at Module._compile (node:internal/modules/cjs/loader:1412:20)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1551:10)
+    at Module.load (node:internal/modules/cjs/loader:1282:32)
+    at Module._load (node:internal/modules/cjs/loader:1098:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:315:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:215:24)
+    at Module.require (node:internal/modules/cjs/loader:1304:12)
+    at require (node:internal/modules/helpers:123:16)
+    at C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js:129:7

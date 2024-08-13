@@ -8,6 +8,7 @@ const fs = require("fs");
 const https = require("https");
 const hostname = "toowake.live";
 const authRouter = require('./express/dashboard/auth');
+const chalk = require("chalk");
 
 var mongooseStatus = false
 
@@ -33,7 +34,7 @@ async function connectToMongoDB() {
             mongooseStatus = false;
         });
     } catch (error) {
-        console.error('Failed to connect to MongoDB:', error);
+        console.error(chalk.red(`Failed to connect to database. \n${error}`));
         process.exit(1); 
     } 
 }
@@ -44,14 +45,14 @@ async function getSystemInfo() {
         console.log("-> CPU: ", `${cpuInfo.manufacturer} ${cpuInfo.brand}`);
         const memInfo = await si.memLayout();
         memInfo.forEach((mem, index) => {
-            console.log(`-> RAM Slot ${index + 1}: ${mem.manufacturer || "No data available"} ${mem.partNum}`);
+            console.log(chalk.blue(`-> RAM Slot ${index + 1}: ${mem.manufacturer || "No data available"} ${mem.partNum}`));
         });
         const gpuInfo = await si.graphics();
         gpuInfo.controllers.forEach((gpu, index) => {
-            console.log("-> GPU ", `${index + 1}: ${gpu.model}`);
+            console.log(chalk.blue(`-> GPU ${index + 1}: ${gpu.model}`));
         });
     } catch (error) {
-        console.error("Error occurred while getting system information: ", `${error}`);
+        console.error(chalk.red(`Error occurred while getting system information: \n${error}`));
     }
 }
 
@@ -67,7 +68,7 @@ async function main() {
         totalShards: amountShards
     });
 
-    manager.on('shardCreate', shard => console.log("Launched Shard: ", `${shard.id + 1}`));
+    manager.on('shardCreate', shard => console.log(chalk.blue("[ SHARD ] Launched Shard: ", `${shard.id + 1}`)));
     manager.spawn().catch(console.error);
     if (process.env.SITE === 'on') {
         
@@ -86,13 +87,13 @@ async function main() {
         }); 
     });
 
-    app.listen(PORT,  'localhost', () => console.log("Server running on port ", `${PORT}`));
+    app.listen(PORT,  'localhost', () => console.log(chalk.yellow("[ EXPRESS ] Server running on port ", `${PORT}`)));
     }
 }
 
 // Execute the main function
 main().catch(error => {
-    console.error(`An error occurred: ${error}`);
+    console.error(chalk.red(`An error occurred:\n ${error}`));
     process.exit(1);
 });
 

@@ -1,0 +1,12 @@
+Unhandled-Rejection: Error: ENOTDIR: not a directory, scandir 'C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\user-installed-commands\dictionary.user.installed.js'
+Error: ENOTDIR: not a directory, scandir 'C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\user-installed-commands\dictionary.user.installed.js'
+    at Object.readdirSync (node:fs:1503:26)
+    at client.handleInstalledCommands (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\functions\handleUserInstalledCommands.js:10:37)
+    at C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js:121:12
+    at Object.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js:123:3)
+    at Module._compile (node:internal/modules/cjs/loader:1467:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1551:10)
+    at Module.load (node:internal/modules/cjs/loader:1282:32)
+    at Module._load (node:internal/modules/cjs/loader:1098:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:315:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:215:24)

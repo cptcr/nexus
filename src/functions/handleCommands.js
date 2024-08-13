@@ -1,8 +1,9 @@
 const fs = require("fs");
+const chalk = require("chalk");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require('discord-api-types/v9');
 const { SlashCommandBuilder } = require("discord.js");
-var count = 0;
+let count = 0;
 
 module.exports = (client) => {
     client.handleCommands = async (commandFolders, path) => {
@@ -19,6 +20,7 @@ module.exports = (client) => {
                     client.commandArray.push(command.data);
                 }
                 count++;
+                console.log(chalk.green(`[ CMD ] Loaded command: ${command.data.name} from file: ${file}`));
             }
         }
 
@@ -28,14 +30,19 @@ module.exports = (client) => {
 
         (async () => {
             try {
+                console.log(chalk.yellow('[ CMD ] Started refreshing application (/) commands.'));
+
                 await rest.put(
                     Routes.applicationCommands(process.env.ID), {
                         body: client.commandArray
                     },
                 );
 
+                console.log(chalk.green('[ CMD ] Successfully reloaded application (/) commands.'));
+                console.log(chalk.cyan(`[ CMD ] Total commands registered: ${count}`));
+
             } catch (error) {
-                console.error(error);
+                console.error(chalk.red('[ CMD ] Error while reloading application (/) commands:', error));
             }
         })();
     };

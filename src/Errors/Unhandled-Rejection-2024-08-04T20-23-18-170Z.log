@@ -1,0 +1,12 @@
+Unhandled-Rejection: TypeError: Cannot read properties of undefined (reading 'toString')
+TypeError: Cannot read properties of undefined (reading 'toString')
+    at client.handleDevCommands (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\functions\handleDevCommands.js:14:51)
+    at C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js:118:12
+    at Object.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js:121:3)
+    at Module._compile (node:internal/modules/cjs/loader:1467:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1551:10)
+    at Module.load (node:internal/modules/cjs/loader:1282:32)
+    at Module._load (node:internal/modules/cjs/loader:1098:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:315:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:215:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:158:5)

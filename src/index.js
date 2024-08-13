@@ -5,6 +5,7 @@ require('dotenv').config();
 var botStatus = false;
 const functionsExt = require("../functions");
 const enc = require("../encrypt").token;
+const chalk = require("chalk");
 
 const path = require("path");
 
@@ -56,6 +57,9 @@ client.commands = new Collection();
 const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js")); 
 const commandFolders = fs.readdirSync("./src/commands");
+const devCommandFolders = fs.readdirSync("./src/dev");
+const installedCommandFolders = fs.readdirSync("./src/user-installed-commands").filter(file => file.endsWith(".js"));
+
 
 // Anti Crash System
 function logErrorToFile(error, errorType) {
@@ -66,7 +70,7 @@ function logErrorToFile(error, errorType) {
   // Ensure the 'Errors' directory exists, create it if it does not
   fs.mkdir(path.join(__dirname, 'Errors'), { recursive: true }, (dirErr) => {
       if (dirErr) {
-          console.error("Failed to create directory:", dirErr);
+          console.error(chalk.red(`Failed to create directory: \n${dirErr}`))
           return;
       }
 
@@ -76,36 +80,34 @@ function logErrorToFile(error, errorType) {
       // Write the error message to the newly created error log file
       fs.writeFile(errorFilePath, errorMessage, (fileErr) => {
           if (fileErr) {
-              console.error("Failed to write to file:", fileErr);
+              console.error(chalk.red(`Failed to write to file: \n${fileErr}`));
           }
       });
   });
 }
 
-// Define process event listeners for handling errors
-process.on('unhandledRejection', (reason, promise) => {
-  console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  logErrorToFile(reason, 'Unhandled-Rejection');
-  if (typeof functionsExt !== 'undefined' && functionsExt.generateError) {
-    functionsExt.generateError("Unhandled Rejection", reason.stack ? reason + '\n' + reason.stack : reason, promise);
+const handleProcessError = (error, type, origin = null) => {
+  console.error(`${type}:`, error);
+  logErrorToFile(error, type);
+
+  // Extended functionality if needed
+  if (functionsExt && functionsExt.generateError) {
+    functionsExt.generateError(type, error.stack ? `${error}\n${error.stack}` : `${error}`, origin);
   }
+}
+
+process.on('unhandledRejection', (reason, promise) => {
+  handleProcessError(reason, 'Unhandled-Rejection', promise);
 });
 
 process.on('uncaughtException', (err) => {
-  console.error("Uncaught Exception:", err);
-  logErrorToFile(err, 'Uncaught-Exception');
-  if (typeof functionsMax !== 'undefined' && functionsMax.generateError) {
-    functionsMax.generateError("Uncaught Exception", err.stack ? err + '\n' + err.stack : err);
-  }
+  handleProcessError(err, 'Uncaught-Exception');
 });
 
 process.on('uncaughtExceptionMonitor', (err, origin) => {
-  console.error("Uncaught Exception Monitor:", err, "Origin:", origin);
-  logErrorToFile(err, 'Uncaught-Exception-Monitor');
-  if (typeof functionsExt !== 'undefined' && functionsExt.generateError) {
-    functionsExt.generateError("Uncaught Exception Monitor", err.stack ? err + '\n' + err.stack : err, origin);
-  }
+  handleProcessError(err, 'Uncaught-Exception-Monitor', origin);
 });
+
 
 
 (async () => {
@@ -162,7 +164,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
       if (!componentModule || !filePath ) { return; } else { await componentModule.run(interaction, client); }
     } catch (error) {
-      console.log(`[COMPONENT HANDLER] ERROR \n${error.stack()}`)
+      console.log(chalk.red(`[COMPONENT HANDLER] ERROR \n${error.stack()}`));
     }
   }
 });
@@ -175,7 +177,6 @@ client.on("messageCreate", async (message) => {
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  console.log("Prefix command used!");
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase(); // Gets the command name and ensures it is in lowercase
   const commandPath = `./prefix/${commandName}.js`;
@@ -193,7 +194,7 @@ client.on("messageCreate", async (message) => {
       throw new Error('Invalid command structure');
     }
   } catch (error) {
-    console.error(error);
+    console.error(chalk.red(error));
     message.reply(`An error occurred: ${error.message}`);
   }
 });
@@ -222,7 +223,7 @@ client.on('messageCreate', async message => {
 
 client.on('ready', async (client) => {
 const { mongooseStatus } = require('../load');
-const { getCount } = require('./functions/handelCommands')(client);
+const { getCount } = require('./functions/handleCommands')(client);
 const { textColored } = require('../lib/function');
 
 let answer = {

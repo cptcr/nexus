@@ -1,0 +1,8 @@
+Uncaught-Exception-Monitor: DiscordAPIError[10062]: Unknown interaction
+DiscordAPIError[10062]: Unknown interaction
+    at handleErrors (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\rest\dist\index.js:730:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async BurstHandler.runRequest (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\rest\dist\index.js:835:23)
+    at async _REST.request (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\rest\dist\index.js:1278:22)
+    at async ChatInputCommandInteraction.reply (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\structures\interfaces\InteractionResponses.js:114:5)
+    at async Object.execute (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\events\interactionCreate.js:63:9)

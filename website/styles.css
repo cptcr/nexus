@@ -1,0 +1,158 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+header, footer {
+    background-color: #333;
+    padding: 1em;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1, h2, h3 {
+    color: #00bfff;
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+#features, #support, #github, #invite {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    justify-content: center; /* This ensures the grid items are centered */
+}
+
+.card {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, border 0.3s ease;
+    border: 1px solid transparent;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.card p {
+    margin-bottom: 0;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.button {
+    display: inline-block;
+    background: #00bfff;
+    color: black;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.button:hover {
+    background: #0294c9;
+    color: white;
+}
+
+footer {
+    background: #333;
+    color: #ccc;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    h1, h2, h3 {
+        font-size: 1.5em;
+        padding-bottom: 5px;
+    }
+
+    .card {
+        padding: 15px;
+        font-size: 0.9em;
+    }
+
+    .button {
+        padding: 8px 15px;
+    }
+
+    #features, #support, #github, #invite {
+        padding: 0 10px; /* Reduce padding to ensure alignment on smaller screens */
+        justify-content: center; /* Center the cards */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+
+    h1, h2, h3 {
+        font-size: 1.2em;
+    }
+
+    .card {
+        padding: 10px;
+        font-size: 0.8em;
+    }
+
+    .button {
+        padding: 6px 10px;
+    }
+
+    .card::before, .card:hover::before {
+        opacity: 0;
+    }
+
+    #features, #support, #github, #invite {
+        padding: 0 9px; /* Reduce padding further for mobile screens */
+        justify-content: center; /* Center the cards */
+    }
+}

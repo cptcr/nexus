@@ -1,0 +1,12 @@
+Uncaught-Exception-Monitor: ReferenceError: channel is not defined
+ReferenceError: channel is not defined
+    at Client.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\Event Handler\Logging\roleMemberAdd.js:17:20)
+    at Client.emit (node:events:532:35)
+    at GuildMemberUpdateAction.handle (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\client\actions\GuildMemberUpdate.js:30:74)
+    at module.exports [as GUILD_MEMBER_UPDATE] (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\client\websocket\handlers\GUILD_MEMBER_UPDATE.js:4:36)
+    at WebSocketManager.handlePacket (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\client\websocket\WebSocketManager.js:355:31)
+    at WebSocketManager.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\client\websocket\WebSocketManager.js:239:12)
+    at WebSocketManager.emit (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:282:31)
+    at WebSocketShard.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\ws\dist\index.js:1190:51)
+    at WebSocketShard.emit (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:282:31)
+    at WebSocketShard.onMessage (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\@discordjs\ws\dist\index.js:1005:14)

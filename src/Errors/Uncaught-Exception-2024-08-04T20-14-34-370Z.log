@@ -1,0 +1,16 @@
+Uncaught-Exception: Error: Cannot find module './functions/handelCommands'
+Require stack:
+- C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js
+Error: Cannot find module './functions/handelCommands'
+Require stack:
+- C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1219:15)
+    at Module._load (node:internal/modules/cjs/loader:1045:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:315:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:215:24)
+    at Module.require (node:internal/modules/cjs/loader:1304:12)
+    at require (node:internal/modules/helpers:123:16)
+    at Client.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\src\index.js:227:22)
+    at Client.emit (node:events:532:35)
+    at WebSocketManager.triggerClientReady (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\client\websocket\WebSocketManager.js:388:17)
+    at WebSocketManager.checkShardsReady (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\client\websocket\WebSocketManager.js:371:10)

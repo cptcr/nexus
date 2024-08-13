@@ -1,0 +1,8 @@
+Unhandled-Rejection: Error [ShardingReadyDied]: Shard 0's process exited before its Client became ready.
+Error [ShardingReadyDied]: Shard 0's process exited before its Client became ready.
+    at Shard.onDeath (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\sharding\Shard.js:178:16)
+    at Object.onceWrapper (node:events:635:26)
+    at Shard.emit (node:events:520:28)
+    at Shard._handleExit (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\discord.js\src\sharding\Shard.js:439:10)
+    at ChildProcess.emit (node:events:520:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)

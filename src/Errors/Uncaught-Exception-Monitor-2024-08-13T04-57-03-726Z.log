@@ -1,0 +1,5 @@
+Uncaught-Exception-Monitor: MongooseError: Operation `jointocreates.findOne()` buffering timed out after 10000ms
+MongooseError: Operation `jointocreates.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\Toowake\Desktop\Nexus-Projects\Nexus\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:188:23)
+    at listOnTimeout (node:internal/timers:573:17)
+    at process.processTimers (node:internal/timers:514:7)
